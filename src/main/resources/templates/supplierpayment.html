@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>SUPPLIER PAYMENT MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasSupPaymentAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New Supplier Payment
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableSupPayment">
+                    <thead class="table-dark">
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Supplier Name</th>
+                        <th>Total Amount</th>
+                        <th>Total Paid Amount</th>
+                        <th>Total Balance Amount</th>
+                        <th>Bill Number</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+                        <!-- table body data -->
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- supplier payment add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" style="height: 100% !important" data-bs-backdrop="static" tabindex="-1"
+                id="offcanvasSupPaymentAdd" aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Supplier Payment</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="col-md-12">
+                        <div class="row no-gutters">
+                            <!-- img area start -->
+                            <div class="col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap w-100 p-5 img formImg"
+                                    style="background-image: url(../resources/images/sup_payment.png);">
+                                </div>
+                            </div>
+                            <!-- img area end -->
+
+                            <div class="col-md-7">
+                                <!-- form -->
+                                <form onsubmit="return false" id="formSupPayment">
+
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- supplier name start -->
+                                        <div class="row mt-2">
+                                            <label for="nameSupplier" class="col-4 col-form-label fw-bold"> Supplier
+                                                Name:
+                                                <span class="text-danger">*</span> </label>
+                                            <div class="col-8">
+                                                <select name="supplierName" id="nameSupplier" class="form-select"
+                                                    required
+                                                    onchange="selectDVali(this,'','supplierpayment','supplier_id','oldSupplierpayment'); getIrnBySup();">
+                                                    <option value="" selected disabled> </option>
+                                                    <option value="">name1</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- supplier name end -->
+                                    </div>
+
+                                    <!-- IRN innner area start -->
+                                    <div class="row mt-2">
+                                        <div class="card p-0 mx-auto" style="width: 97%;">
+                                            <div class="card-header text-light" style="background-color: black;">
+                                                Add IRN :
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <form onsubmit="return false" id="formSupPaymentInner">
+
+                                                    <div class="row mt-2">
+
+                                                        <!-- IRN start -->
+                                                        <div class="col-6">
+                                                            <label for="nameIrn" class="col-form-label fw-bold">
+                                                                IRN: <span class="text-danger">*</span></label>
+                                                            <select name="IrnName" id="nameIrn" class="form-select"
+                                                                onchange="selectDVali(this,'','supplierpaymenthasirn','irn_id'); generateTotalAmount();">
+                                                                <option value="" selected disabled> </option>
+                                                            </select>
+                                                        </div>
+                                                        <!-- IRN end -->
+
+                                                        <!-- total amount start -->
+                                                        <div class="col-6">
+                                                            <label for="textTotalAmount"
+                                                                class="form-label fw-bold">Total
+                                                                Amount:
+                                                                <span class="text-danger">*</span></label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">Rs.</span>
+                                                                <input class="form-control" type="text"
+                                                                    id="textTotalAmount" aria-label="Amount"
+                                                                    placeholder="Total Amount..."
+                                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'supplierpaymenthasirn','totalamount'); generateTotalAmount(); ">
+                                                            </div>
+                                                        </div>
+                                                        <!-- total amount end -->
+
+                                                    </div>
+
+                                                    <div class="row mt-2">
+
+                                                        <!-- paid amount start -->
+                                                        <div class="col-6">
+                                                            <label for="paidAmount" class="form-label fw-bold">Paid
+                                                                Amount :
+                                                                <span class="text-danger">*</span></label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">Rs.</span>
+                                                                <input class="form-control" type="text" id="paidAmount"
+                                                                    aria-label="Amount" placeholder="Paid Amount.."
+                                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'supplierpaymenthasirn','paidamount'); generateBalanceAmount();">
+                                                            </div>
+                                                        </div>
+                                                        <!-- paid amount end -->
+
+                                                        <!-- balance amount start -->
+                                                        <div class="col-6">
+                                                            <label for="balanceAmount"
+                                                                class="form-label fw-bold">Balance Amount :
+                                                                <span class="text-danger">*</span></label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">Rs.</span>
+                                                                <input class="form-control" type="text"
+                                                                    id="balanceAmount" aria-label="Amount"
+                                                                    placeholder="Balance Amount..."
+                                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'supplierpaymenthasirn','balanceamount');">
+                                                            </div>
+                                                        </div>
+                                                        <!-- balance amount end -->
+
+                                                    </div>
+
+                                                    <div class="row mt-2">
+
+                                                        <!-- button start -->
+                                                        <div class="col-7"></div>
+
+                                                        <div class="col-3">
+                                                            <button type="submit"
+                                                                class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                                id="btnInnerSubmit" onclick="innerSubmit()"><i
+                                                                    class="fa-solid fa-folder-plus"></i> Add</button>
+                                                        </div>
+
+                                                        <div class="col-2"></div>
+                                                        <!-- button end -->
+                                                    </div>
+                                                </form>
+
+                                                <!-- table area start -->
+                                                <div class="row mt-2">
+                                                    <div class="col-1"></div>
+                                                    <div class="col-10">
+                                                        <!-- table start -->
+                                                        <table class="table table-bordered table-striped border-danger"
+                                                            id="tableInner">
+                                                            <thead class="table-dark">
+
+                                                                <!-- # no index -->
+                                                                <th> # </th>
+                                                                <th>IRN</th>
+                                                                <th>Total Amount</th>
+                                                                <th>Paid Amount</th>
+                                                                <th>Balance Amount</th>
+                                                                <th>Modify</th>
+                                                            </thead>
+                                                            <tbody class="table-warning">
+
+                                                            </tbody>
+                                                        </table>
+                                                        <!-- table end -->
+                                                    </div>
+                                                    <div class="col-1"></div>
+                                                </div>
+                                                <!-- table area end -->
+
+                                            </div>
+                                        </div>
+                                        <!-- IRn inner area end -->
+
+                                        <div class="row mt-2">
+
+                                            <!-- total amount start -->
+                                            <div class="col-4">
+                                                <label for="totalAmount" class="form-label fw-bold">Total Amount:
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rs.</span>
+                                                    <input class="form-control" type="text" id="totalAmount"
+                                                        aria-label="Amount" required placeholder="Amount..."
+                                                        onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'supplierpayment','totalamount','oldSupplierpayment')">
+                                                </div>
+                                            </div>
+                                            <!-- total amount end -->
+
+                                            <!-- total paid amount start -->
+                                            <div class="col-4">
+                                                <label for="textTotalPaidAmount" class="form-label fw-bold">Total Paid:
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rs.</span>
+                                                    <input class="form-control" type="text" id="textTotalPaidAmount"
+                                                        aria-label="Amount" required placeholder="Amount..."
+                                                        onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'supplierpayment','totalpaidamount','oldSupplierpayment'); generateMainBalance();">
+                                                </div>
+                                            </div>
+                                            <!-- total paid amount end -->
+
+                                            <!-- total balance amount start -->
+                                            <div class="col-4">
+                                                <label for="textTotalBalanceAmount" class="form-label fw-bold">Total
+                                                    Balance
+                                                    Amount:
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rs.</span>
+                                                    <input class="form-control" type="text" id="textTotalBalanceAmount"
+                                                        aria-label="Amount" required placeholder="Amount..."
+                                                        onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'supplierpayment','totalbalanceamount','oldSupplierpayment')">
+                                                </div>
+                                            </div>
+                                            <!-- total balance amount end -->
+                                        </div>
+
+                                        <div class="row mt-2">
+
+                                            <div class="col-6">
+                                                <label for="slctPaymentMethod" class="form label fw-bold mb-2">Payment
+                                                    Mehtod :
+                                                    <span class="text-danger">*</span></label>
+                                                <select name="paymentMethodSlct" id="slctPaymentMethod"
+                                                    class="form-select" required
+                                                    onchange="selectDVali(this, '','supplierpayment','paymentmethod_id','oldSupplierpayment')">
+                                                    <option value="" selected disabled>Select Payment Method</option>
+                                                    <option value="card">card </option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <!-- check or online transfer details start -->
+                                                <div class="row mt-2">
+                                                    <p class="d-inline-flex gap-1">
+                                                        <button class="btn btn-primary" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#chequeDetails"
+                                                            aria-expanded="true" aria-controls="chequeDetails">Fill
+                                                            Cheque Details</button>
+
+                                                        <button class="btn btn-primary" type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#onlineTransferDetails" aria-expanded="true"
+                                                            aria-controls="onlineTransferDetails">Fill Online Transfer
+                                                            Details</button>
+                                                    </p>
+
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="multi-collapse collapse" id="chequeDetails">
+                                                                <div class="card card-body">
+                                                                    <div class="col-12">
+                                                                        <label for="chequeNumberTxt"
+                                                                            class="form-label fw-bold">Cheque Number :
+                                                                            <span class="text-danger">*</span></label>
+                                                                        <input type="text" id="chequeNumberTxt"
+                                                                            class="form-control"
+                                                                            placeholder="Enter cheque Number"
+                                                                            onkeyup="textFeildVali(this, '' , 'supplierpayment','chequenumber','oldSupplierpayment')">
+                                                                    </div>
+
+                                                                    <div class="col-12">
+                                                                        <label for="chequeDate"
+                                                                            class="form-label fw-bold"> Cheque
+                                                                            Date : <span
+                                                                                class="text-danger">*</span></label>
+                                                                        <input type="date" class="form-control"
+                                                                            id="chequeDate"
+                                                                            onchange="textFeildVali(this, '' ,'supplierpayment' , 'chequedate','oldSupplierpayment')">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col">
+                                                            <div class="multi-collapse collapse"
+                                                                id="onlineTransferDetails">
+                                                                <div class="card card-body">
+                                                                    <div class="col-12">
+                                                                        <label for="transferIdTxt"
+                                                                            class="form-label fw-bold">Transfer Id :
+                                                                            <span class="text-danger">*</span></label>
+                                                                        <input type="text" id="transferIdTxt"
+                                                                            class="form-control"
+                                                                            placeholder="Enter Transfer Id"
+                                                                            onkeyup="textFeildVali(this, '' , 'supplierpayment','transfer_id','oldSupplierpayment')">
+                                                                    </div>
+
+                                                                    <div class="col-12">
+                                                                        <label for="TransferDateTime"
+                                                                            class="form-label fw-bold"> Transfer Date
+                                                                            Time : <span
+                                                                                class="text-danger">*</span></label>
+                                                                        <input type="datetime-local"
+                                                                            class="form-control" id="TransferDateTime"
+                                                                            onchange="textFeildVali(this, '' ,'supplierpayment' , 'transfer_datetime','oldSupplierpayment')">
+                                                                    </div>
+
+                                                                    <div class="col-12">
+                                                                        <label for="bankNameTxt"
+                                                                            class="form-label fw-bold">Bank Name :
+                                                                            <span class="text-danger">*</span></label>
+                                                                        <input type="text" id="bankNameTxt"
+                                                                            class="form-control"
+                                                                            placeholder="Enter Bank Name"
+                                                                            onkeyup="textFeildVali(this, '' , 'supplierpayment','bankname','oldSupplierpayment')">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- check or online transfer details end -->
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mt-2">
+                                            <!-- note start -->
+                                            <div class="col-12">
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" id="textNote"
+                                                        onkeyup="textFeildVali(this, '' ,'purchaseorder', 'note','oldSupplierpayment')">
+                                                    </textarea>
+                                                    <label for="textNote" class="form-label fw-bold">
+                                                        Note :
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <!-- note end -->
+                                        </div>
+
+                                        <div class="row mt-2">
+
+                                            <!-- button start -->
+
+                                            <div class="col-6"></div>
+
+                                            <div class="col-3">
+                                                <button
+                                                    class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                    type="reset">
+                                                    <i class="fa-solid fa-recycle"></i> Clear</button>
+                                            </div>
+
+                                            <div class="col-3">
+                                                <button type="submit"
+                                                    class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                    id="btnSupPaymentSubmit" onclick="supPaySubmit()"><i
+                                                        class="fa-solid fa-folder-plus"></i>
+                                                    Add</button>
+                                            </div>
+
+                                            <!-- button end -->
+
+                                        </div>
+                                    </div>
+                            </div>
+                            </form>
+                            <!-- form end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- employee add offcanves end -->
+
+    </div>
+
+    <!-- view modal  -->
+
+    <div class="modal" id="supPayViewModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title">View Supplier Payment Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body div-form">
+                    <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+                    <span class="textlogo gradient-text">SAMANMALI</span>
+
+                    <table id="printSupPayTable" class="table table-hover table-bordered table-striped">
+
+                        <tr>
+                            <td><b>Contact:</b> <br></td>
+                            <td colspan="2"> 0372257260 <br> Samanmali@email.com</td>
+                            <td><b>Address :</b></td>
+                            <td colspan="2"> Bemmulegedara,<br> Narammala. </td>
+                        </tr>
+
+                        <tr>
+                            <th>Supplier Name : </th>
+                            <td id="viewSupplier" colspan="4"></td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="5">IRN Details</th>
+                        </tr>
+
+                        <tr>
+                            <td colspan="5">
+                                <table class="table table-hover table-striped table-bordered"
+                                    id="tableSupPayInnerPrint">
+                                    <thead class="table-warning">
+
+                                        <!-- # no index -->
+                                        <th> # </th>
+                                        <th>IRN</th>
+                                        <th>Total Amount</th>
+                                        <th>Paid Amount</th>
+                                        <th>Balance Amount</th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <th>Total Amount : </th>
+                            <td id="viewTotal" colspan="2"></td>
+
+                            <th>Total Paid Amount : </th>
+                            <td id="viewPaid" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Total Balance Amount : </th>
+                            <td id="viewBalance" colspan="2"></td>
+
+                            <th>Cheque Number : </th>
+                            <td id="viewChequeNumber" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Cheque Date : </th>
+                            <td id="viewChequeDate" colspan="2"></td>
+
+                            <th>Transfer Id : </th>
+                            <td id="viewTransferId" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Transfer Date Time : </th>
+                            <td id="viewTransferDateTime" colspan="2"></td>
+
+                            <th>Bank Name : </th>
+                            <td id="viewBankName" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Added date time : </th>
+                            <td id="viewAddDateTime" colspan="2"></td>
+
+                            <th>Note : </th>
+                            <td id="viewNote" colspan="2"></td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="btnPrintRow();">print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- view modal  -->
+
+    <!-- link functioncalling js file -->
+    <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link employee js file -->
+    <script src="controllers/supplierpayment.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/navbar.js"></script>
+</body>
+
+</html>

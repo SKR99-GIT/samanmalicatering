@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>INGREDIENT MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-5">
+                <button type="button" id="btnPrintTable" class="btn btn-gradient"
+                onclick="ingTablePrint();"> <i class="fa-solid fa-print"></i> Ingredient Table Print </button>
+            </div>
+            <div class="col-5 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasIngredientAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New Ingredient
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableIngredient">
+                    <thead class="table-dark">
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Ingredient Name</th>
+                        <th>Code</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- ingredient add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" data-bs-backdrop="static" tabindex="-1" id="offcanvasIngredientAdd"
+                aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Ingredient</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <!-- img area start -->
+                            <div class="col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap w-100 p-5 img formImg"
+                                    style="background-image: url(../resources/images/Ingredient.png);">
+                                </div>
+                            </div>
+                            <!-- img area end -->
+
+                            <div class="col-md-7">
+                                <!-- form start-->
+                                <form onsubmit="return false" id="fromIngredient">
+
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <!-- Ingredient category start -->
+                                        <div class="col-12">
+                                            <label for="slctIngredientCategory"
+                                                class="form label fw-bold mb-2">Ingredient Category : <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="slctCategory" id="slctIngredientCategory" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','ingredient','ingredientcategory_id','oldIngredient')">
+                                                <option value="" selected disabled>Select Category</option>
+                                            </select>
+                                        </div>
+                                        <!-- Ingredient category end -->
+                                    </div>
+
+                                    <!-- Ingredient name start -->
+                                    <div class="row mt-2">
+                                        <label for="textName" class="col-4 col-form-label fw-bold">Ingredient Name :
+                                            <span class="text-danger">*</span> </label>
+                                        <div class="col-12">
+                                            <input type="text" id="textName" class="form-control" required
+                                                placeholder="Enter Service Name"
+                                                onkeyup="textFeildVali(this,'^([A-Z][a-z]{2,15}[\\s]){1,10}([A-Z][a-z]{2,15}){1}$', 'ingredient' , 'name','oldIngredient')">
+                                        </div>
+                                    </div>
+                                    <!-- Ingredient name end -->
+
+                                    <div class="row mt-2">
+                                        <!-- unit price start -->
+                                        <div class="col-6">
+                                            <label for="unitPriceText" class="form-label fw-bold">Unit Price: <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="unitPriceText"
+                                                    aria-label="Amount" required placeholder="Enter Charge"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'ingredient','unitprice','oldIngredient')">
+                                            </div>
+                                        </div>
+                                        <!-- unit price end -->
+
+                                        <!-- status start -->
+                                        <div class="col-6">
+                                            <label for="slctIngredientStatus" class="form label fw-bold">Status : <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="slctStatus" id="slctIngredientStatus" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','ingredient','ingredientstatus_id','oldIngredient')">
+                                                <option value="" selected disabled>Select Status</option>
+                                                <option value="available">available </option>
+                                                <option value="unavailable">unavailable </option>
+                                            </select>
+                                        </div>
+                                        <!-- status end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <!-- note start -->
+
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="textNote"
+                                                    onkeyup="textFeildVali(this, '' ,'garbageremoval' , 'note','oldIngredient')">
+                                                </textarea>
+                                                <label for="textNote" class="form-label fw-bold">
+                                                    Note :
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- note end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- button start -->
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                type="reset">
+                                                <i class="fa-solid fa-recycle"></i> Clear</button>
+                                        </div>
+
+                                        <div class="col-3"></div>
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                                disabled id="btnIngredientUpdate" onclick="IngredientUpdate()"><i
+                                                    class="fa-solid fa-wrench"></i> Update</button>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <button type="submit"
+                                                class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                id="btnIngredientSubmit" onclick="IngredientSubmit()"><i
+                                                    class="fa-solid fa-folder-plus"></i> Add</button>
+                                        </div>
+                                        <!-- button end -->
+                                    </div>
+                                </form>
+                                <!-- form end-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- modal for view in Ingredient start -->
+            <!-- modal for view in Ingredient end -->
+
+            <!-- link functioncalling js file -->
+            <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+            <!-- link validation js file -->
+            <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+            <!-- link commonFunction file  -->
+            <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+            <!-- link js file -->
+            <script src="controllers/ingredients.js"></script>
+
+            <!-- link js file -->
+            <script src="controllers/navbar.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+.btn:hover {
+    background-position: right center;
+}
+
+.btn-gradient {
+    flex: 1 1 auto;
+    margin: 10px;
+    padding: 18px;
+    width: 300px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 100% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, #f6d365 0%, #fda085 51%, #f6d365 100%);
+}

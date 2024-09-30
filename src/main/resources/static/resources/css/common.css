@@ -1,0 +1,32 @@
+form {
+    background-image: linear-gradient(to bottom right, rgba(235, 221, 66, 0.671), rgba(233, 121, 121, 0.6));
+    border: 2px solid rgba(14, 14, 14, 0.588);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.formImg {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.gradient-text {
+    background-image: linear-gradient(60deg, #e21122, #ffe13a);
+    background-clip: text;
+    color: transparent;
+}
+
+* {
+    font-family: cursive;
+}
+
+.offcanvas-top {
+    height: 90% !important;
+}
+
+.dashImg {
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+}

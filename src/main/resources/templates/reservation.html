@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>RESERVATION MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="modal"
+                    data-bs-target="#modalReservationAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New Reservation
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableReservation">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Reservation Code</th>
+                        <th>Customer Name</th>
+                        <th>Function Type</th>
+                        <th>Function Date</th>
+                        <th>Start Time</th>
+                        <th>Participation Count</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- reservation add offcanves start -->
+
+            <div class="modal" id="modalReservationAdd" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="gradient-text">Manage Reservation</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body div-form">
+
+                            <div class="col-md-11 mx-auto">
+                                <form onsubmit="return false" id="formReservation">
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <!-- customer name start -->
+                                        <div class="col-4">
+                                            <label for="slctCustomerName" class="form label fw-bold mb-2">Customer
+                                                Name : <span class="text-danger">*</span></label>
+                                            <select name="slctCustomer" id="slctCustomerName" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','reservation','customer_id','oldReservation')">
+                                                <option value="" selected disabled>Select Customer</option>
+                                            </select>
+                                        </div>
+                                        <!-- customer name end  -->
+
+                                        <!-- function type start-->
+                                        <div class="col-4">
+                                            <label for="slctFunctionType" class="form label fw-bold mb-2">Function
+                                                Type : <span class="text-danger">*</span></label>
+                                            <select name="funTypeSlct" id="slctFunctionType" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','reservation','functiontype_id','oldReservation'); getMenuNameByFuctionType();">
+                                                <option value="" selected disabled>Select Category</option>
+                                            </select>
+                                        </div>
+                                        <!-- function type end-->
+
+                                        <!-- function date start -->
+                                        <div class="col-4">
+                                            <label for="dateTxt" class="form-label fw-bold">Function Date : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="dateTxt" required
+                                                onchange="textFeildVali(this, '^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$' ,'reservation' , 'functiondate','oldReservation')">
+                                        </div>
+                                        <!-- function date end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-2"></div>
+
+                                        <!-- function start time start -->
+                                        <div class="col-4">
+                                            <label for="startTimeTxt" class="form-label fw-bold">Function Start Time :
+                                                <span class="text-danger">*</span></label>
+                                            <input type="time" class="form-control" id="startTimeTxt" required
+                                                onchange="textFeildVali(this, '' ,'reservation' , 'functionstarttime','oldReservation'); generateEndTime();">
+                                        </div>
+                                        <!-- function start time end -->
+
+                                        <!-- function end time start -->
+                                        <div class="col-4">
+                                            <label for="endTimeTxt" class="form-label fw-bold">Function End Time : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="time" class="form-control" id="endTimeTxt" required
+                                                onchange="textFeildVali(this, '' ,'reservation' , 'functionendtime','oldReservation')">
+                                        </div>
+                                        <!-- function end time end -->
+
+                                        <div class="col-2"></div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-2"></div>
+                                        <!-- count start -->
+                                        <div class="col-4">
+                                            <label for="countTxt" class="form-label fw-bold">Participate Count :
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-people-group"
+                                                        style="color: #00040a;"></i></span>
+                                                <input type="text" id="countTxt" class="form-control" required
+                                                    placeholder="Enter Conut"
+                                                    onkeyup="textFeildVali(this,'^[0-9]+$','reservation','participatecount','oldReservation'); getAvailbleHall(); getPopUpMessage();">
+                                            </div>
+                                        </div>
+                                        <!-- count end -->
+
+                                        <!-- function hall start -->
+                                        <div class="col-4">
+                                            <label for="slctHallName" class="form label fw-bold mb-2">Hall Name :
+                                            </label>
+                                            <select name="slctHall" id="slctHallName" class="form-select"
+                                                onchange="selectDVali(this, '','reservation','functionhall_id','oldReservation'); getPriceeMenu();">
+                                                <option value="" selected disabled>Select Hall</option>
+                                            </select>
+                                        </div>
+                                        <!-- function hall end -->
+                                        <div class="col-2"></div>
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- menu start-->
+                                        <div class="col-4">
+                                            <label for="slctMenuType" class="form label fw-bold mb-2">Menu : <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="MenuSlct" id="slctMenuType" class="form-select" required
+                                                onchange="selectDVali(this, '','reservation','menu_id','oldReservation'); getSubmenubyMenu(); getMenuPrice(); generateMenuTotal();">
+                                                <!-- generateAdvance(); -->
+                                                <option value="" selected disabled>Select Menu </option>
+                                            </select>
+                                        </div>
+                                        <!-- menu end-->
+
+                                        <!-- Menu Price start -->
+                                        <div class="col-4">
+                                            <label for="MenuPriceTxt" class="form-label fw-bold">Menu Price (Per Plate)
+                                                : <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="MenuPriceTxt"
+                                                    aria-label="Amount" required disabled placeholder="0.00"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'reservation','menuprice','oldReservation');">
+                                            </div>
+                                        </div>
+                                        <!-- Menu Price end -->
+
+                                        <!-- Menu Price start -->
+                                        <div class="col-4">
+                                            <label for="MenuPriceTotalTxt" class="form-label fw-bold">Total Menu Price :
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="MenuPriceTotalTxt"
+                                                    aria-label="Amount" required disabled placeholder="0.00"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'reservation','totalmenuprice','oldReservation');">
+                                            </div>
+                                        </div>
+                                        <!-- Menu Price end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <!-- Price start -->
+                                        <div class="col-6">
+                                            <label for="discountPrice" class="form-label fw-bold">Discount Price (Allow More Than 100 Count) :
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="discountPrice"
+                                                    aria-label="Amount" disabled placeholder="0.00"
+                                                    onkeyup="generateTotalByDiscount();">
+                                            </div>
+                                        </div>
+                                        <!-- Price end -->
+
+                                        <!-- Menu Price start -->
+                                        <div class="col-6">
+                                            <label for="afterMenuPriceTotalTxt" class="form-label fw-bold">Total Menu Price (After Discount) :
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="afterMenuPriceTotalTxt"
+                                                    aria-label="Amount" disabled placeholder="0.00"
+                                                    >
+                                            </div>
+                                        </div>
+                                        <!-- Menu Price end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="card p-0 mx-auto" style="width: 97%;">
+                                            <div class="card card-body p-2">
+
+                                                <!-- sub menu select start -->
+                                                <div class="row mt-2">
+                                                    <div class="col-5 p-4">
+                                                        <!-- select start -->
+                                                        <label for="selectSubMenu" class="form-label">Selected
+                                                            Sub Menus :
+                                                        </label>
+                                                        <select class="form-select" size="10"
+                                                            style="background-color: rgba(254, 245, 75, 0.573);"
+                                                            id="selectSubMenu"> </select>
+                                                        <!-- select end -->
+                                                    </div>
+                                                    <!-- buttons start -->
+                                                    <div class="col-2 p-4 text-center">
+                                                        <input type="button" class="btn btn-dark"
+                                                            style="margin-top: 80px;width:45px"
+                                                            onclick="btnRemoveSubMenu();" value=">">
+                                                        <br> <br>
+
+                                                        <input type="button" class="btn btn-dark"
+                                                            style="margin-top: 50px;width:45px" onclick="btnAddAgain();"
+                                                            value="<"> <br>
+                                                        <br>
+
+                                                    </div>
+                                                    <!-- buttons end -->
+                                                    <div class="col-5 p-4">
+                                                        <!-- select start -->
+                                                        <label for="removeSubmenu" class="form-label">Removed
+                                                            Sub Menu :
+                                                        </label>
+                                                        <select class="form-select" size="10"
+                                                            style="background-color: rgba(254, 245, 75, 0.573);"
+                                                            id="removeSubmenu"></select>
+                                                        <!-- select end -->
+                                                    </div>
+                                                </div>
+                                                <!-- sub menu select end -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- Additional submenu Price start -->
+                                        <div class="col-3">
+                                            <label for="additionalPriceTxt" class="form-label fw-bold">Additional Sub
+                                                Menu
+                                                Price
+                                                :</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="additionalPriceTxt"
+                                                    aria-label="Amount" disabled required placeholder="0.00"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'reservation','additionalprice','oldReservation');">
+                                            </div>
+                                        </div>
+                                        <!-- Additional submenu Price end -->
+
+                                        <div class="col-3">
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#menuCollapse" style="margin-top: 28px;"
+                                                aria-expanded="false" aria-controls="menuCollapse">Add Additional
+                                                Sub Menu</button>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <label for="servicePrice" class="form-label fw-bold">Additional Services
+                                                Price :
+                                            </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="servicePrice"
+                                                    aria-label="Amount" disabled placeholder="Service Price"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'reservation','serviceprice', 'oldReservation')">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#serviceCollapse" style="margin-top: 28px;"
+                                                aria-expanded="false" aria-controls="serviceCollapse">Add Additional
+                                                Service</button>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+
+                                                <div class="col">
+                                                    <div class="collapse multi-collapse" id="menuCollapse">
+                                                        <div class="mt-2 card card-body">
+                                                            <!-- submenu inner form start -->
+                                                            <form onsubmit="return false"
+                                                                style="background-image: none; border: none;"
+                                                                id="fromInnerSubmenu">
+
+                                                                <div class="row mt-2">
+
+                                                                    <!-- sub menu category start-->
+                                                                    <div class="col-4">
+                                                                        <label for="slctSubMenuCategory"
+                                                                            class="form label fw-bold mb-2">Sub
+                                                                            Menu
+                                                                            Category : </label>
+                                                                        <select name="slctCategory"
+                                                                            id="slctSubMenuCategory" class="form-select"
+                                                                            onchange="getSubMenuByCategory()">
+                                                                            <option value="" selected disabled>
+                                                                                Select Category
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <!-- sub menu category end-->
+
+
+                                                                    <!-- sub menu select start -->
+                                                                    <div class="col-4">
+                                                                        <label for="slctSubmenuName"
+                                                                            class="form label fw-bold mb-2">Sub
+                                                                            Menu Name
+                                                                            :</label>
+                                                                        <select name="submenuNameSlct"
+                                                                            id="slctSubmenuName" class="form-select"
+                                                                            onchange="selectDVali(this, '','reservationhasadditionalsubmenu','submenu_id'); generateSubmenuPrice();">
+                                                                            <option value="" selected disabled>
+                                                                                Select Submenu Name </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <!-- sub menu select end -->
+
+                                                                    <!-- submenu Price start -->
+                                                                    <div class="col-4">
+                                                                        <label for="SubmenuPriceTxt"
+                                                                            class="form-label fw-bold">Sub Menu
+                                                                            Price (Per Plate):</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text">Rs.</span>
+                                                                            <input class="form-control" type="text"
+                                                                                id="SubmenuPriceTxt" aria-label="Amount"
+                                                                                disabled placeholder="Enter Price"
+                                                                                onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'reservationhasadditionalsubmenu','submenu_charge')">
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- submenu Price end -->
+                                                                </div>
+
+                                                                <div class="row mt-2">
+
+                                                                    <!-- button start -->
+
+                                                                    <div class="col-3"></div>
+
+                                                                    <div class="col-3"></div>
+
+                                                                    <div class="col-3"></div>
+
+                                                                    <div class="col-3">
+                                                                        <button type="submit"
+                                                                            class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                                            id="btnInnerSubmenuAdd"
+                                                                            onclick="submenuInnerAdd()"><i
+                                                                                class="fa-solid fa-folder-plus"></i>
+                                                                            Add</button>
+                                                                    </div>
+
+                                                                    <!-- button end -->
+                                                            </form>
+                                                            <!-- sub menu inner form end -->
+
+                                                            <!-- sub menu inner table start -->
+
+                                                            <div class="row mt-3">
+                                                                <div class="col-1"></div>
+                                                                <div class="col-10">
+                                                                    <table
+                                                                        class="table table-bordered table-striped border-danger"
+                                                                        id="tableInnerSubmenu">
+                                                                        <thead class="table-dark">
+                                                                            <th>#</th>
+                                                                            <th>Sub Menu</th>
+                                                                            <th>Sub menu Price</th>
+                                                                            <th>Modify</th>
+                                                                        </thead>
+                                                                        <tbody class="table-warning">
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="col-1"></div>
+                                                            </div>
+
+                                                            <!-- submenu inner table end -->
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="collapse multi-collapse" id="serviceCollapse">
+                                                    <div class="mt-2 card card-body">
+
+                                                        <!-- service inner form start -->
+                                                        <form style="background-image: none; border: none;"
+                                                            onsubmit="return false" id="fromInnerService">
+
+                                                            <div class="row mt-2">
+
+                                                                <!-- Service category start-->
+                                                                <div class="col-4">
+                                                                    <label for="slctService"
+                                                                        class="form label fw-bold mb-2">Service Category
+                                                                        :</label>
+                                                                    <select name="ServiceSlct" id="slctService"
+                                                                        class="form-select"
+                                                                        onchange="selectDVali(this, '','reservationhasservice','service_id'); getNameByCategory();">
+                                                                        <option value="" selected disabled>Select
+                                                                            Service
+                                                                            Category</option>
+                                                                    </select>
+                                                                </div>
+                                                                <!-- service category end-->
+
+                                                                <!-- Service name start-->
+                                                                <div class="col-4">
+                                                                    <label for="slctNameService"
+                                                                        class="form label fw-bold mb-2">Service :</label>
+                                                                    <select name="ServiceNameSlct" id="slctNameService"
+                                                                        class="form-select"
+                                                                        onchange="generateServicePrice();">
+                                                                        <option value="" selected disabled>Select Name
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <!-- service name end-->
+
+                                                                <!-- service Price start -->
+                                                                <div class="col-4">
+                                                                    <label for="ServicePriceTxt"
+                                                                        class="form-label fw-bold">Service
+                                                                        Price :</label>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">Rs.</span>
+                                                                        <input class="form-control" type="text"
+                                                                            id="ServicePriceTxt" aria-label="Amount"
+                                                                            disabled placeholder="Enter Price"
+                                                                            onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'reservationhasservice','servicecharge')">
+                                                                    </div>
+                                                                </div>
+                                                                <!-- service Price end -->
+                                                            </div>
+
+
+                                                            <div class="row mt-2">
+
+                                                                <!-- button start -->
+
+                                                                <div class="col-3"></div>
+
+                                                                <div class="col-3"></div>
+
+                                                                <div class="col-3"></div>
+
+                                                                <div class="col-3">
+                                                                    <button type="submit"
+                                                                        class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                                        id="btnServiceSubmit"
+                                                                        onclick="serviceInnerSubmit()"><i
+                                                                            class="fa-solid fa-folder-plus"></i>
+                                                                        Add</button>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- button end -->
+                                                        </form>
+                                                        <!-- service inner form end -->
+
+                                                        <!-- service inner table start -->
+
+                                                        <div class="row mt-3">
+                                                            <div class="col-1"></div>
+                                                            <div class="col-10">
+                                                                <table
+                                                                    class="table table-bordered table-striped border-danger"
+                                                                    id="tableInnerService">
+                                                                    <thead class="table-dark">
+                                                                        <th>#</th>
+                                                                        <th>Service</th>
+                                                                        <th>Service Price</th>
+                                                                        <th>Modify</th>
+                                                                    </thead>
+                                                                    <tbody class="table-warning">
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-1"></div>
+                                                        </div>
+
+                                                        <!-- service inner table end -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <div class="col-2"></div>
+                                        <!-- total Price start -->
+                                        <div class="col-4">
+                                            <label for="totalPriceTxt" class="form-label fw-bold">Total Amount :
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="totalPriceTxt"
+                                                    aria-label="Amount" required disabled placeholder="0.00"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'reservation','totalprice','oldReservation');">
+                                            </div>
+                                        </div>
+                                        <!-- total Price end -->
+
+                                        <!-- advance amount start -->
+                                        <!-- <div class="col-4">
+                                            <label for="advanceAmountTxt" class="form-label fw-bold">Advance Amount :
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="advanceAmountTxt"
+                                                    aria-label="Amount" required placeholder="0.00"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'reservation','advanceamount','oldReservation'); getStatusByAdvanceAmount()">
+                                            </div>
+                                        </div> -->
+                                        <!-- advance amount end -->
+
+                                        <!-- Status start -->
+                                        <div class="col-4">
+                                            <label for="slctReservationStatus" class="form label fw-bold mb-2">Status :
+                                                <span class="text-danger">*</span></label>
+                                            <select name="reservationSlctStatus" id="slctReservationStatus"
+                                                class="form-select" required
+                                                onchange="selectDVali(this, '','reservation','reservationstatus_id','oldReservation')">
+                                                <option value="" selected disabled>Select Status</option>
+                                            </select>
+                                        </div>
+                                        <!-- Status end -->
+                                        <div class="col-2"></div>
+                                    </div>
+
+                                    <div class="row mt-3">
+
+                                        <!-- note start -->
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="textNote"
+                                                    onkeyup="textFeildVali(this, '' ,'reservation' , 'note','oldReservation')">
+                                        </textarea>
+                                                <label for="textNote" class="form-label fw-bold">
+                                                    Note :
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- note end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- button start -->
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                type="reset">
+                                                <i class="fa-solid fa-recycle"></i> Clear</button>
+                                        </div>
+
+                                        <div class="col-3"></div>
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                                disabled id="btnReservationUpdate" onclick="reservationUpdate()"><i
+                                                    class="fa-solid fa-wrench"></i>
+                                                Update</button>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <button type="submit"
+                                                class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                id="btnReservationSubmit" onclick="reservationSubmit()"><i
+                                                    class="fa-solid fa-folder-plus"></i>
+                                                Add</button>
+                                        </div>
+
+                                        <!-- button end -->
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- view modal  -->
+
+    <div class="modal" id="reservationViewModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title">View Purchase Order Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body div-form">
+                    <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+                    <span class="textlogo gradient-text">SAMANMALI</span>
+
+                    <table id="printReservationTable" class="table table-hover table-bordered table-striped">
+
+                        <tr>
+                            <td><b>Contact:</b> <br></td>
+                            <td colspan="2"> 0372257260 <br> Samanmali@email.com</td>
+                            <td><b>Address :</b></td>
+                            <td colspan="2"> Bemmulegedara,<br> Narammala. </td>
+                        </tr>
+
+                        <tr>
+                            <th>Reservation Code : </th>
+                            <td id="viewResCode" colspan="2"></td>
+
+                            <th>Customer Name : </th>
+                            <td id="viewCustomer" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Function Type : </th>
+                            <td id="viewFunctionType" colspan="2"></td>
+
+                            <th>Function Date : </th>
+                            <td id="viewFunctionDate" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Function Start Time : </th>
+                            <td id="viewStartTime" colspan="2"></td>
+
+                            <th>Function End Time : </th>
+                            <td id="viewEndTime" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Participate Count : </th>
+                            <td id="viewCount" colspan="2"></td>
+
+                            <th>Function Hall Name : </th>
+                            <td id="viewHall" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Menu Name : </th>
+                            <td id="viewMenu" colspan="2"></td>
+
+                            <th>Total Menu Price : </th>
+                            <td id="viewTotMenu" colspan="2"></td>
+                        </tr>
+
+
+                        <tr>
+                            <th>Addtional SubMenu Details</th>
+                            <td id="viewSubmenuPrice" colspan="2"></td>
+
+                            <th>Addtional Service Details</th>
+                            <td id="viewServicePrice" colspan="3"></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3">
+                                <table class="table table-hover table-striped table-bordered" id="tableSubmenuInner">
+                                    <thead class="table-warning">
+
+                                        <!-- # no index -->
+                                        <th>#</th>
+                                        <th>Sub Menu</th>
+                                        <th>Sub menu Price</th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </td>
+
+                            <td colspan="3">
+                                <table class="table table-hover table-striped table-bordered" id="tableServiceInner">
+                                    <thead class="table-warning">
+
+                                        <!-- # no index -->
+                                        <th>#</th>
+                                        <th>Service</th>
+                                        <th>Service Price</th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+                            <th>Total Amount : </th>
+                            <td id="viewTotal" colspan="2"></td>
+
+                            <th>Status : </th>
+                            <td id="viewStatus" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Added date time : </th>
+                            <td id="viewAddDateTime" colspan="2"></td>
+
+                            <!-- <th>Advance Amount: </th>
+                            <td id="viewAdvanceAmount" colspan="2"></td> -->
+                        </tr>
+
+                        <tr>
+                            <th>Note : </th>
+                            <td id="viewNote" colspan="4"></td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="btnPrintRow();">print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- view modal  -->
+
+    <!-- print modal start -->
+
+    <!-- print modal end -->
+
+    <!-- link functioncalling js file -->
+    <script src="/controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="/controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="/controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link employee js file -->
+    <script src="/controllers/reservation.js"></script>
+
+    <!-- link js file -->
+    <script src="/controllers/navbar.js"></script>
+</body>
+
+</html>

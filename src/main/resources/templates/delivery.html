@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>DELIVERY MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableDelivery">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Reservation Code</th>
+                        <th>Function Type</th>
+                        <th>Function Date</th>
+                        <th>Start Time</th>
+                        <th>Reservation status</th>
+                        <th>Kitchen Status</th>
+                        <th>Delivery Status</th>
+                        <th>Lorry Name</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- delivery modal start -->
+            <div class="modal" id="refillDeliveryModal" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title">Reservation Details</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body div-form">
+                            <div class="col-md-11 mx-auto">
+                                <form onsubmit="return false" id="fromDelivery">
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <!-- customer name start -->
+                                        <div class="col-4">
+                                            <label for="slctCustomerName" class="form label fw-bold mb-2">Customer Name
+                                                : <span class="text-danger">*</span></label>
+                                            <select name="slctCustomer" id="slctCustomerName"
+                                                class="form-select deliveryInputs" required
+                                                onchange="selectDVali(this, '','reservation','customer_id','oldReservation')">
+                                                <option value="" selected disabled>Select Customer</option>
+                                            </select>
+                                        </div>
+                                        <!-- customer name end  -->
+
+                                        <!-- function date start -->
+                                        <div class="col-4">
+                                            <label for="dateTxt" class="form-label fw-bold">Function Date : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="date" class="form-control deliveryInputs" id="dateTxt" required
+                                                onchange="textFeildVali(this, '^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$' ,'reservation' , 'functiondate','oldReservation')">
+                                        </div>
+                                        <!-- function date end -->
+
+                                        <!-- function time start -->
+                                        <div class="col-4">
+                                            <label for="timeTxt" class="form-label fw-bold">Function Time : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="time" class="form-control deliveryInputs" id="timeTxt" required
+                                                onchange="textFeildVali(this, '' ,'reservation' , 'functionstarttime','oldReservation')">
+                                        </div>
+                                        <!-- function time end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <div class="col-2"></div>
+                                        <!-- function type start-->
+                                        <div class="col-4">
+                                            <label for="slctFunctionType" class="form label fw-bold mb-2">Function Type
+                                                : <span class="text-danger">*</span></label>
+                                            <select name="funTypeSlct" id="slctFunctionType"
+                                                class="form-select deliveryInputs" required
+                                                onchange="selectDVali(this, '','reservation','functiontype_id','oldReservation'); getMenuNameByFuctionType();">
+                                                <option value="" selected disabled>Select Category</option>
+                                            </select>
+                                        </div>
+                                        <!-- function type end-->
+
+                                        <!-- count start -->
+                                        <div class="col-4">
+                                            <label for="countTxt" class="form-label fw-bold">Participate Count : <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-people-group"
+                                                        style="color: #00040a;"></i></span>
+                                                <input type="text" id="countTxt" class="form-control deliveryInputs"
+                                                    required placeholder="Enter Conut"
+                                                    onkeyup="textFeildVali(this,'^[0-9]+$','reservation','participatecount','oldReservation')">
+                                            </div>
+                                        </div>
+                                        <!-- count end -->
+                                        <div class="col-2"></div>
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <div class="col-2"></div>
+
+                                        <!-- menu start-->
+                                        <div class="col-4">
+                                            <label for="slctMenuType" class="form label fw-bold mb-2">Menu : <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="MenuSlct" id="slctMenuType" class="form-select deliveryInputs"
+                                                required
+                                                onchange="selectDVali(this, '','reservation','menu_id','oldReservation'); getSubmenubyMenu(); getMenuPrice();">
+                                                <option value="" selected disabled>Select Menu </option>
+                                            </select>
+                                        </div>
+                                        <!-- menu end-->
+
+                                        <!-- Menu Price start -->
+                                        <div class="col-4">
+                                            <label for="MenuPriceTxt" class="form-label fw-bold">Menu Price : <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control deliveryInputs" type="text" id="MenuPriceTxt"
+                                                    aria-label="Amount" required placeholder="Enter Price"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'reservation','menuprice','oldReservation')">
+                                            </div>
+                                        </div>
+                                        <!-- Menu Price end -->
+
+                                        <div class="col-2"></div>
+
+                                    </div>
+
+                                    <!-- submenu tables start -->
+                                    <div class="row mt-2">
+
+                                        <div class="col-6">
+                                            <table class="table table-bordered table-striped border-danger"
+                                                id="tableSubmenu">
+                                                <thead class="table-dark">
+                                                    <th>#</th>
+                                                    <th>Sub Menu</th>
+                                                </thead>
+                                                <tbody class="table-warning">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <table class="table table-bordered table-striped border-danger"
+                                                id="tableAdditionalSubmenu">
+                                                <thead class="table-dark">
+                                                    <th>#</th>
+                                                    <th>Additional Sub Menu</th>
+                                                </thead>
+                                                <tbody class="table-warning">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <!-- submenu tables end -->
+
+                                    <div class="row mt-2">
+
+                                        <!-- Status start -->
+                                        <div class="col-6">
+                                            <label for="slctReservationStatus" class="form label fw-bold mb-2">Status :
+                                                <span class="text-danger">*</span></label>
+                                            <select name="reservationSlctStatus" id="slctReservationStatus"
+                                                class="form-select deliveryInputs" required
+                                                onchange="selectDVali(this, '','reservation','reservationstatus_id','oldReservation')">
+                                                <option value="" selected disabled>Select Status</option>
+                                            </select>
+                                        </div>
+                                        <!-- Status end -->
+
+                                        <!-- Kitchen status start -->
+                                        <div class="col-6">
+                                            <label for="slctKitchenStatus" class="form label fw-bold mb-2">Kitchen
+                                                Status :
+                                                <span class="text-danger">*</span></label>
+                                            <select id="slctKitchenStatus" class="form-select deliveryInputs" required
+                                                onchange="selectDVali(this, '','reservation','kitchen_status_id','oldReservation')">
+                                            </select>
+                                        </div>
+                                        <!-- Kitchen status end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <!-- Delivery Status start -->
+                                        <div class="col-6">
+                                            <label for="slctDeliveryStatus" class="form label fw-bold mb-2">Delivery
+                                                Status : </label>
+                                            <select id="slctDeliveryStatus" class="form-select" required
+                                                onchange="selectDVali(this, '','reservation','delivery_status_id','oldReservation')">
+                                            </select>
+                                        </div>
+                                        <!-- Delivery Status end -->
+
+                                        <!-- Lorry Status start -->
+                                        <div class="col-6">
+                                            <label for="slectLorryStatus" class="form label fw-bold mb-2">Lorry
+                                                :</label>
+                                            <select id="slectLorryStatus" class="form-select" required
+                                                onchange="selectDVali(this, '','reservation','lorry_id','oldReservation')">
+                                            </select>
+                                        </div>
+                                        <!-- Lorry Status end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- note start -->
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="textNote"
+                                                    onkeyup="textFeildVali(this, '' ,'reservation' , 'note','oldReservation')">
+                                            </textarea>
+                                                <label for="textNote" class="form-label fw-bold">
+                                                    Note :
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- note end -->
+
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="btnDispatch" class="btn btn-primary"
+                                onclick="acceptToGo();">Dispatched</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- delivery modal end -->
+        </div>
+    </div>
+
+    <!-- print modal start -->
+
+    <!-- print modal end -->
+
+    <!-- link functioncalling js file -->
+    <script src="/controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="/controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="/controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link employee js file -->
+    <script src="/controllers/delivery.js"></script>
+
+    <!-- link js file -->
+    <script src="/controllers/navbar.js"></script>
+</body>
+
+</html>

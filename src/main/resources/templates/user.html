@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>USER MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasUserAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New User
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tabeleUser">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Employee Name</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- table area end -->
+
+        <!-- user add offcanves start -->
+        <div class="offcanvas offcanvas-top" data-bs-backdrop="static" tabindex="-1" id="offcanvasUserAdd"
+            aria-labelledby="staticBackdropLabel">
+            <div class="offcanvas-header">
+                <h2 class="gradient-text">Manage User</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+
+                <div class="col-md-12">
+                    <div class="row no-gutters">
+                        <!-- img area start -->
+                        <div class="col-md-5 d-flex align-items-stretch">
+                            <div class="info-wrap w-100 p-5 img formImg"
+                                style="background-image: url(../resources/images/user.jpg);">
+                            </div>
+                        </div>
+                        <!-- img area end -->
+
+                        <div class="col-md-7">
+                            <!-- form start -->
+                            <form onsubmit="return false" id="formUser">
+
+                                <div class="row">
+                                    <div class="col-12 text-end">
+                                        <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                    </div>
+                                </div>
+
+                                <!-- employee name start -->
+                                <div class="row mt-2">
+                                    <label for="nameEmployee" class="col-4 col-form-label fw-bold"> Employee Name:
+                                        <span class="text-danger">*</span> </label>
+                                    <div class="col-8">
+                                        <select name="employeeName" id="nameEmployee" class="form-select" required
+                                            onchange="selectDVali(this,'','user','employee_id','oldUser'); generateEmail();">
+                                            <option value="" selected disabled>Select Employee Name</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- employee name end -->
+
+                                <!-- user name start -->
+                                <div class="row mt-2">
+                                    <label for="textUserName" class="col-4 col-form-label fw-bold"> User Name:
+                                        <span class="text-danger">*</span> </label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control form-input" placeholder="Enter User Name"
+                                            required id="textUserName"
+                                            onkeyup="textFeildVali(this,'^.*$','user','username','oldUser')">
+                                    </div>
+                                </div>
+                                <!-- user name end -->
+
+                                <!-- password start -->
+                                <div class="row mt-2">
+                                    <label for="userPassword" class="col-4 col-form-label fw-bold"> Password:
+                                        <span class="text-danger">*</span> </label>
+                                    <div class="col-8">
+                                        <input type="password" id="userPassword" name="passwordUser"
+                                            class="form-control" placeholder="Enter Password" required
+                                            onkeyup="textFeildVali(this,'^[A-Za-z0-9]{6,10}$','user','password','oldUser')">
+                                    </div>
+                                </div>
+                                <!-- password end -->
+
+                                <!-- repassword start -->
+                                <div class="row mt-2">
+                                    <label for="userRePassword" class="col-4 col-form-label fw-bold"> Re-Password:
+                                        <span class="text-danger">*</span> </label>
+                                    <div class="col-8">
+                                        <input type="password" id="userRePassword" name="repasswordUser"
+                                            class="form-control" placeholder="Re-Type Your Password" required
+                                            onkeyup="retypePasswordVali()">
+                                    </div>
+                                </div>
+                                <!-- repassword end -->
+
+                                <!-- email start -->
+                                <div class="row mt-2">
+                                    <label for="userEmail" class="col-4 col-form-label fw-bold"> Email:
+                                        <span class="text-danger">*</span> </label>
+                                    <div class="col-8">
+                                        <input type="text" id="userEmail" name="emailUser" class="form-control"
+                                            placeholder="Enter Email" required
+                                            onkeyup="textFeildVali(this,'^[A-Za-z0-9\\-\\_]{6,20}[@][a-z]{3,10}[.][a-z]{2,3}$','user','email','oldUser')">
+                                    </div>
+                                </div>
+                                <!-- email end -->
+
+                                <!-- roles auto fill start -->
+
+                                <div id="rolesDiv" class="w-100 mt-2 d-flex justify-content-between">
+
+                                </div>
+                                <!-- roles auto fill end -->
+
+                                <!-- status start -->
+                                <div class="row mt-2">
+                                    <label class="col-4 col-form-label fw-bold"> Status :
+                                        <span class="text-danger">*</span> </label>
+                                    <div class="col-8">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="userStatus" onchange="if(this.checked) {
+                                    console.log('Test');
+                                    user.status= true;
+                                    userStatusLabel.innerText = 'User Account is Active';
+                                } else {
+                                    user.status= false;
+                                    userStatusLabel.innerText = 'User Account is NOT Active';
+                                }">
+                                            <label for="userStatus" id="userStatusLabel" class="form-check-label">
+                                                User account is NOT active
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- status end -->
+
+                                <!-- note start -->
+                                <div class="row mt-2">
+                                    <label for="textNote" class="col-4 col-form-label fw-bold"> Note : </label>
+                                    <div class="col-8">
+                                        <textarea class="form-control" id="textNote"
+                                            onkeyup="textFeildVali(this, ' ' ,'user' , 'note','oldUser')"></textarea>
+                                    </div>
+                                </div>
+                                <!-- note end -->
+
+                                <!-- button start -->
+                                <div class="row mt-2">
+
+                                    <div class="col-3">
+                                        <button
+                                            class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                            type="reset">
+                                            <i class="fa-solid fa-recycle"></i> Clear</button>
+                                    </div>
+
+                                    <div class="col-3"></div>
+
+                                    <div class="col-3">
+                                        <button
+                                            class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                            disabled id="btnUserUpdate" onclick="userUpdate()">
+                                            <i class="fa-solid fa-wrench"></i> Update</button>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <button type="submit"
+                                            class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                            id="btnUserAdd" onclick="userSubmit()"><i
+                                                class="fa-solid fa-folder-plus"></i> Add</button>
+
+                                    </div>
+                                </div>
+                                <!-- button end -->
+
+                        </div>
+                    </div>
+                </div>
+
+                </form>
+                <!-- user form end -->
+
+            </div>
+
+            <!-- link functioncalling js file -->
+            <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+            <!-- link validation js file -->
+            <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+            <!-- link commonFunction file  -->
+            <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+            <!-- link employee js file -->
+            <script src="controllers/user.js"></script>
+
+            <!-- link js file -->
+            <script src="controllers/navbar.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>RESERVATION REPORTS</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- report element -->
+        <div class="row mt-2">
+
+            <div class="col-1"></div>
+            <div class="col-2">
+                <label for="slctStartDate" class="form-label fw-bold">Select Start Date : (Function Date)</label>
+                <input type="date" name="slctSDate" id="slctStartDate" class="form-control" required>
+            </div>
+
+            <div class="col-2">
+                <label for="slctEndDate" class="form-label fw-bold">Select End Date : (Function Date)</label>
+                <input type="date" name="slctEDate" id="slctEndDate" class="form-control" required>
+            </div>
+
+            <div class="col-2">
+                <label for="slctEndDate" class="form-label fw-bold"> Select Function Type : </label>
+                <select name="slctfuntype" id="slctFunctionType" class="form-select" required style="margin-top: 23px;">
+                </select>
+            </div>
+
+            <div class="col-2">
+                <button class="btn btn-warning" type="button" onclick="generateReport()"
+                    style="margin-left: 110px;margin-top: 55px;">
+                    <i class="fa-solid fa-rotate fa-spin"></i> Generate
+                </button>
+            </div>
+
+            <div class="col-2">
+                <button class="btn btn-warning" type="button" onclick="resRepoTablePrint();"
+                    style="margin-top: 55px;margin-left: 100px;">
+                    <i class="fa-solid fa-print fa-beat"> </i> Print Table
+                </button>
+            </div>
+            <div class="col-1"></div>
+
+        </div>
+        <!-- report element -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableReservationReport">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Reservation Code</th>
+                        <th>Customer Name</th>
+                        <th>Function Type</th>
+                        <th>Function Date</th>
+                        <th>Start Time</th>
+                        <th>Participation Count</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+        </div>
+
+    </div>
+
+
+    <!-- link functioncalling js file -->
+    <script src="/controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="/controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="/controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link employee js file -->
+    <script src="/controllers/reservationreportfuntype.js"></script>
+
+    <!-- link js file -->
+    <script src="/controllers/navbar.js"></script>
+</body>
+
+</html>

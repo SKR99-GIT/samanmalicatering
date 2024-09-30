@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>INGREDIENT INVENTORY</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableInventory">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Ingreadient</th>
+                        <th>Reserve Date</th>
+                        <th>Expire Date</th>
+                        <th>Total Quntity</th>
+                        <th>Available Quntity</th>
+                        <th>Remove Quntity</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+        </div>
+
+        <!-- view modal in inventory start -->
+
+         <div class="modal" id="inventoryViewModal" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title">View Inventory Details</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body div-form">
+                        <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+                        <span class="textlogo gradient-text">SAMANMALI</span>
+
+                        <table id="printInventoryTable" class="table table-hover table-bordered table-striped">
+
+                            <tr>
+                                <td><b>Contact:</b> <br></td>
+                                <td colspan="2"> 0372257260 <br> Samanmali@email.com</td>
+                                <td><b>Address :</b></td>
+                                <td colspan="2"> Bemmulegedara,<br> Narammala. </td>
+                            </tr>
+
+                            <tr>
+                                <th>Ingredients : </th>
+                                <td id="viewIng" colspan="4"></td>
+                            </tr>
+                            <tr>
+                                <th>Reserve Date : </th>
+                                <td id="viewRDate" colspan="2"></td>
+
+                                <th>Expire Date : </th>
+                                <td id="viewEDate" colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <th>Available Quntity : </th>
+                                <td id="viewAQty" colspan="2"></td>
+
+                                <th>Remove Quntity : </th>
+                                <td id="viewRQty" colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <th>Total Quntity : </th>
+                                <td id="viewTQty" colspan="2"></td>
+
+                                <th>Batch Number : </th>
+                                <td id="viewBatchNumber" colspan="2"></td>
+
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="btnPrintRow();">print</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <!-- view modal in inventory end -->
+
+        <!-- link functioncalling js file -->
+        <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+        <!-- link validation js file -->
+        <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+        <!-- link commonFunction file  -->
+        <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+        <!-- link employee js file -->
+        <script src="controllers/inventory.js"></script>
+
+        <!-- link js file -->
+        <script src="controllers/navbar.js"></script>
+
+</body>
+
+</html>

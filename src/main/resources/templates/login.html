@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login : Samanmali Catering </title>
+    <link rel="icon" href="resources/icon_catering.png">
+
+    <!-- link bootstrap css -->
+    <link rel="stylesheet" href="resources/bootstrap-5.3.1-dist/bootstrap-5.3.1-dist/css/bootstrap.min.css">
+
+    <!-- link bootstap js file -->
+    <script src="resources/bootstrap-5.3.1-dist/bootstrap-5.3.1-dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- link fontawsome css -->
+    <link rel="stylesheet" href="resources/fontawesome-free-6.4.2-web/fontawesome-free-6.4.2-web/css/all.css">
+
+    <!-- link jQuery -->
+    <script src="resources/js/jquery.js"></script>
+
+    <!-- link datatable css file -->
+    <link rel="stylesheet" href="resources/datatables-1.13.6/css/jquery.dataTables.css">
+
+    <!-- link datatable js file -->
+    <script src="resources/datatables-1.13.6/js/jquery.dataTables.js"></script>
+
+    <!-- login css -->
+    <link rel="stylesheet" href="resources/css/login.css">
+
+    <!-- button css -->
+    <link rel="stylesheet" href="resources/css/button.css">
+
+    <!-- employee_status css -->
+    <link rel="stylesheet" href="resources/css/employee_status.css">
+</head>
+
+<body>
+
+    <!-- preloader start -->
+    <div class="preloader">
+        <div class="p-5 bg-white rounded-circle" onclick="showLogin()">
+            <img src="../resources/images/samanmali-logo.png" width="250px" height="200px">
+        </div>
+    </div>
+    <!-- preloader end -->
+
+
+    <!-- login form start -->
+    <div class="col-md-12">
+        <div class="row no-gutters mx-0">
+
+            <div class="col-md-5">
+
+                <div class="row p-2" style="margin-top: 80px; margin-left: 100px;">
+
+                    <div class="wrapper">
+                        <div class="form-box login">
+                            <h2 class="gradient-text">Login</h2>
+                            <form class="formLogin" action="/login" method="POST">
+                                <div class="input-box">
+                                    <span class="icon"><i class="fa-solid fa-user"></i></span>
+                                    <input name="username" type="userName" required>
+                                    <label for="">User Name</label>
+                                </div>
+                                <div class="input-box">
+                                    <span class="icon"><i class="fa-solid fa-lock"></i></span>
+                                    <input name="password" type="password" required>
+                                    <label for="">Password</label>
+                                </div>
+
+                                <!-- login error                     th:if kiynn thimeleaf wl ekk, eken tmierror param ekk add krl tiyenod blnn-->
+                                <div class="text-danger m-3 fw-bold" th:if="${param.error}">
+                                    Invalid username and password
+                                </div>
+                                <!--  <div class="remember-forgot">
+                        <label for="rememberChk">
+                            <input type="checkbox" id="rememberChk">
+                            Remember me 
+                        </label>
+                        <a href="#">Forgot Password?</a>
+                    </div> -->
+                                <button type="submit" class="btn btn-gradient" style="width: 400px;">Login</button>
+                                <!-- <div class="login-register">
+                        <p>Don't have an account?
+                            <a href="#" class="register-link">Register</a>
+                        </p>
+                    </div> -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- img area start -->
+            <div class="col-md-7 d-flex align-items-stretch">
+                <div class="info-wrap w-100 p-5 img formImg"
+                    style="background-image: url(../resources/images/login.jpg);">
+                </div>
+            </div>
+            <!-- img area end -->
+
+        </div>
+    </div>
+    <!-- login form end -->
+    <script>
+        const showLogin = () => {
+            parentDiv = document.querySelector('.preloader');
+            parentDiv.classList.add('flip-up')
+
+            setTimeout(() => {
+                test.classList.add('d-flex')
+            }, 900)
+        }
+    </script>
+</body>
+
+</html>

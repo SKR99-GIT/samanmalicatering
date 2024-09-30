@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>EMPLOYEE MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEmployeeAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New Employee
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableEmployee">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Calling Name</th>
+                        <th>Full Name</th>
+                        <th>Nic</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Designation</th>
+                        <th>Employee Photo</th>
+                        <th>status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- employee add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" style="height: 100% !important" data-bs-backdrop="static" tabindex="-1"
+                id="offcanvasEmployeeAdd" aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Employee</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="col-md-12">
+                        <div class="row no-gutters">
+                            <!-- img area start -->
+                            <div class="col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap w-100 p-5 img formImg"
+                                    style="background-image: url(../resources/images/employee.jpg);">
+                                </div>
+                            </div>
+                            <!-- img area end -->
+
+                            <div class="col-md-7">
+                                <!-- form -->
+                                <form onsubmit="return false" id="formEmployee">
+
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- full name start  -->
+                                    <div class="row mt-2">
+                                        <label for="textName" class="col-4 col-form-label fw-bold">Full Name : <span
+                                                class="text-danger">*</span> </label>
+                                        <div class="col-10">
+                                            <input type="text" id="textName" class="form-control" required
+                                                placeholder="Enter Full Name" onkeyup="textNameVali(this)">
+                                        </div>
+                                    </div>
+
+                                    <!-- full name end -->
+
+                                    <div class="row mt-2">
+
+                                        <!-- calling name start -->
+
+                                        <div class="col-3">
+                                            <label for="callingNameTxt" class="form-label fw-bold">Calling name : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control form-input" id="callingNameTxt"
+                                                list="callingNameList" required placeholder="Enter Calling Name"
+                                                onkeyup="employee.callingname=this.value, callingNameVali(this)">
+                                            <datalist id="callingNameList">
+                                            </datalist>
+                                        </div>
+
+                                        <!-- calling name end -->
+
+                                        <!-- nic start -->
+
+                                        <div class="col-3">
+                                            <label for="nicTxt" class="form-label fw-bold">NIC : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" id="nicTxt" class="form-control" required
+                                                placeholder="Enter NIC"
+                                                onkeyup="textFeildVali(this,'^([6789][0-9]{8}[VX])|(([1][9])|([2][0]))([0-9]{10})$', 'employee','nic', 'oldEmployee')">
+
+                                        </div>
+
+                                        <!-- nic end -->
+
+                                        <!--   gender start -->
+
+                                        <div class="col-3">
+                                            <label class="form-label fw-bold" aria-required="true">Gender : <span
+                                                    class="text-danger">*</span></label> <br>
+                                            <input type="radio" value="Male" name="genderRadio"
+                                                onchange="employee.gender=this.value" id="slctMale"> Male
+                                            <input type="radio" value="Female" name="genderRadio"
+                                                onchange="employee.gender=this.value" id="slctFemale"> Female
+                                        </div>
+
+                                        <!-- gender end -->
+
+                                        <!-- hbd start -->
+
+                                        <div class="col-3">
+                                            <label for="hbdTxt" class="form-label fw-bold">Date of Birth : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="hbdTxt" required
+                                                onchange="textFeildVali(this, '^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$' ,'employee' , 'dob', 'oldEmployee')">
+                                        </div>
+
+                                        <!-- hbd end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- mobile start -->
+
+                                        <div class="col-4">
+                                            <label for="mobiTxt" class="form-label fw-bold">Mobile No : <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-mobile"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="mobiTxt" required
+                                                    placeholder="Enter Mobile No"
+                                                    onkeyup="textFeildVali(this,'^[0][7][01245678][0-9]{7}$', 'employee','mobile', 'oldEmployee')">
+
+                                            </div>
+                                        </div>
+
+                                        <!-- mobile end -->
+
+                                        <!-- land nbr start -->
+
+                                        <div class="col-4">
+                                            <label for="landTxt" class="form-label fw-bold"> Land No : </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-phone"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="landTxt"
+                                                    placeholder="Enter Land No"
+                                                    onkeyup="textFeildVali(this,'^[0][1234568][12345678][0-9]{7}$','employee','landno', 'oldEmployee')">
+                                            </div>
+                                        </div>
+
+                                        <!-- land nbr end -->
+
+                                        <!-- email start -->
+
+                                        <div class="col-4">
+                                            <label for="emailTxt" class="form-label fw-bold">Email : <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-envelope"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="emailTxt" required
+                                                    placeholder="Enter Email"
+                                                    onkeyup="textFeildVali(this,'^[A-Za-z0-9\\-\\_]{6,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'employee','email', 'oldEmployee')">
+                                            </div>
+                                        </div>
+
+                                        <!-- email end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- address start -->
+
+                                        <div class="col-6">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="txtAddress" required
+                                                    onkeyup="textFeildVali(this, '^.*$' ,'employee' , 'address', 'oldEmployee')">
+                                                        </textarea>
+                                                <label for="txtAddress" class="form-label fw-bold">
+                                                    Address : <span class="text-danger"> * </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- address end -->
+
+                                        <!-- note start -->
+
+                                        <div class="col-6">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="textNote"
+                                                    onkeyup="textFeildVali(this, ' ' ,'employee' , 'note', 'oldEmployee')">
+
+                                                        </textarea>
+                                                <label for="textNote" class="form-label fw-bold">
+                                                    Note :
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- note end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- designation start -->
+
+                                        <div class="col-4">
+                                            <label for="desiTxt" class="form label fw-bold">Designation : <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="slctDesi" id="desiTxt" class="form-select" required
+                                                onchange="selectDVali(this, '','employee','designation_id', 'oldEmployee')">
+                                                <option value="" selected disabled>Select Designation</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- designation end -->
+
+                                        <!-- civilstatus start -->
+
+                                        <div class="col-4">
+                                            <label for="slctCivilStatus" class="form label fw-bold">Civilstatus : <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="slctCivil" id="slctCivilStatus" class="form-select" required
+                                                onchange="selectSVali(this, '','employee','civilstatus', 'oldEmployee')">
+                                                <option value="" selected disabled>Select civilstatus</option>
+                                                <option value="single">Single</option>
+                                                <option value="married">Married</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- civilstatus end -->
+
+                                        <!-- employee status start  -->
+
+                                        <div class="col-4">
+                                            <label for="slctEmployeeStatus" class="form label fw-bold">Employee Status :
+                                                <span class="text-danger">*</span></label>
+                                            <select name="slctEmployee" id="slctEmployeeStatus" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','employee','employeestatus_id', 'oldEmployee')">
+                                                <option value="" selected disabled>Select Status</option>
+                                                <option value="working">Working</option>
+                                                <option value="notworking">Resign</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- employee status end  -->
+
+                                        <!-- employee photo -->
+
+                                        <div class="row mt-2">
+                                            <div class="col-3 text-end fw-bold"></div>
+
+                                            <div class="col-3 text-center">
+                                                <img src="../resources/images/user.png"
+                                                    style="width:  75px; height: 75px; border-radius: 50px;"
+                                                    id="imgEmpPhoto">
+                                                <input type="file" class="d-none" id="fileEmpPhoto"
+                                                    onchange="fileValidator(fileEmpPhoto, 'employee', 'employee_photo', 'employee_photo_name', imgEmpPhoto)">
+                                            </div>
+                                            <div class="col-3">
+                                                <button type="button" class="btn btn-primary fw-bold w-100"
+                                                    onclick="fileEmpPhoto.click();">Select Image</button><br>
+                                                <button onclick="buttonImgClear();" type="button"
+                                                    class=" mt-1 btn btn-primary fw-bold w-100">Clear Image</button>
+                                            </div>
+                                            <div class="col-3 text-end fw-bold"></div>
+                                        </div>
+
+                                        <!-- employee photo -->
+
+                                        <div class="row mt-2">
+                                            <!-- button start -->
+
+                                            <div class="col-3">
+                                                <button
+                                                    class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                    type="reset">
+                                                    <i class="fa-solid fa-recycle"></i> Clear</button>
+                                            </div>
+
+                                            <div class="col-3"></div>
+
+                                            <div class="col-3">
+                                                <button
+                                                    class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                                    disabled id="btnEmployeeUpdate" onclick="employeeUpdate()">
+                                                    <i class="fa-solid fa-wrench"></i> Update</button>
+                                            </div>
+
+                                            <div class="col-3">
+                                                <button type="submit"
+                                                    class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                    id="btnEmployeeAdd" onclick="employeeSubmit()"><i
+                                                        class="fa-solid fa-folder-plus"></i>
+                                                    Add</button>
+
+                                            </div>
+
+                                            <!-- button end -->
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                                <!-- form end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- employee add offcanves end -->
+
+        </div>
+
+                <!-- view modal  -->
+
+                <div class="modal" id="employeeViewModal" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title">View Employee Details</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body div-form">
+                                <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+                                <span class="textlogo gradient-text">SAMANMALI</span>
+        
+                                <table id="printEmployeeTable" class="table table-hover table-bordered table-striped">
+        
+                                    <tr>
+                                        <td><b>Contact:</b> <br></td>
+                                        <td colspan="2"> 0372257260 <br> Samanmali@email.com</td>
+                                        <td><b>Address :</b></td>
+                                        <td colspan="2"> Bemmulegedara,<br> Narammala. </td>
+                                    </tr>
+        
+                                    <tr>
+                                        <th>Full Name : </th>
+                                        <td id="viewFullName" colspan="4"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Employee Number : </th>
+                                        <td id="viewEmpNum" colspan="2"></td>
+        
+                                        <th>Nic : </th>
+                                        <td id="viewNic" colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email : </th>
+                                        <td id="viewEmail" colspan="2"></td>
+        
+                                        <th>Mobile : </th>
+                                        <td id="viewMobile" colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Land Number : </th>
+                                        <td id="viewLandNum" colspan="2"></td>
+        
+                                        <th>Date of Birth : </th>
+                                        <td id="viewDOB" colspan="2"></td>
+        
+                                    </tr>
+                                    <tr>
+                                        <th>Address : </th>
+                                        <td id="viewAddress" colspan="2"></td>
+        
+                                        <th>Note : </th>
+                                        <td id="viewNote" colspan="2"></td>
+        
+                                    </tr>
+        
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" onclick="btnPrintRow();">print</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- view modal  -->
+
+        <!-- link functioncalling js file -->
+        <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+        <!-- link validation js file -->
+        <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+        <!-- link commonFunction file  -->
+        <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+        <!-- link employee js file -->
+        <script src="controllers/employee.js"></script>
+
+        <!-- link js file -->
+        <script src="controllers/navbar.js"></script>
+
+</body>
+
+</html>

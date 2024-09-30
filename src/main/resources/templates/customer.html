@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>CUSTOMER MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasCustomerAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i>Add New Customer
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableCustomer">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Customer Name</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                        <th>Mobile</th>
+                        <th>NIC</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- customer add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" data-bs-backdrop="static" tabindex="-1" id="offcanvasCustomerAdd"
+                aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Customer</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="col-md-12">
+                        <div class="row no-gutters">
+                            <!-- img area start -->
+                            <div class="col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap w-100 p-5 img formImg"
+                                    style="background-image: url(../resources/images/customer.jpg);">
+                                </div>
+                            </div>
+                            <!-- img area end -->
+
+                            <div class="col-md-7">
+                                <!-- form -->
+                                <form onsubmit="return false" id="formCustomer">
+
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- full name start  -->
+                                    <div class="row mt-2">
+                                        <label for="textName" class="col-4 col-form-label fw-bold">Full Name : <span
+                                                class="text-danger">*</span> </label>
+                                        <div class="col-12">
+                                            <input type="text" id="textName" class="form-control" required
+                                                placeholder="Enter Full Name"
+                                                onkeyup="textFeildVali(this,'^([A-Z][a-z]{2,15}[\\s]){1,10}([A-Z][a-z]{2,15}){1}$', 'customer' , 'name')">
+                                        </div>
+                                    </div>
+                                    <!-- full name end -->
+
+                                    <div class="row mt-2">
+
+                                        <!-- nic start -->
+
+                                        <div class="col-4">
+                                            <label for="nicTxt" class="form-label fw-bold">NIC : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" id="nicTxt" class="form-control" required
+                                                placeholder="Enter NIC"
+                                                onkeyup="textFeildVali(this,'^([6789][0-9]{8}[VX])|(([1][9])|([2][0]))([0-9]{10})$', 'customer','nic','oldCustomer'); getGenderFromNIC();">
+                                        </div>
+
+                                        <!-- nic end -->
+
+                                        <!--   gender start -->
+
+                                        <div class="col-4">
+                                            <label class="form-label fw-bold" aria-required="true">Gender : <span
+                                                    class="text-danger">*</span></label> <br>
+                                            <input type="radio" value="Male" name="genderRadio"
+                                                onchange="customer.gender=this.value" id="slctMale"> Male
+                                            <input type="radio" value="Female" name="genderRadio"
+                                                onchange="customer.gender=this.value" id="slctFemale"> Female
+                                        </div>
+
+                                        <!-- gender end -->
+
+                                        <!-- status start -->
+
+                                        <div class="col-4">
+                                            <label for="slctCustomerStatus" class="form label fw-bold"> Status :
+                                                <span class="text-danger">*</span></label>
+                                            <select name="slctCustomer" id="slctCustomerStatus" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','customer','customerstatus_id','oldCustomer')">
+                                            </select>
+                                        </div>
+
+                                        <!-- status end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- mobile start -->
+
+                                        <div class="col-4">
+                                            <label for="mobiTxt" class="form-label fw-bold">Mobile No : <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-mobile"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="mobiTxt" required
+                                                    placeholder="Enter Mobile Number"
+                                                    onkeyup="textFeildVali(this,'^[0][7][01245678][0-9]{7}$','customer','mobile','oldCustomer')">
+
+                                            </div>
+                                        </div>
+
+                                        <!-- mobile end -->
+
+                                        <!-- land nbr start -->
+
+                                        <div class="col-4">
+                                            <label for="landTxt" class="form-label fw-bold"> Land No : </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-phone"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="landTxt"
+                                                    placeholder="Enter Land Number"
+                                                    onkeyup="textFeildVali(this,'^[0][1234568][12345678][0-9]{7}$','customer','landno','oldCustomer')">
+                                            </div>
+                                        </div>
+
+                                        <!-- land nbr end -->
+
+
+                                        <!-- email start -->
+
+                                        <div class="col-4">
+                                            <label for="emailTxt" class="form-label fw-bold">Email :</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-envelope"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="emailTxt"
+                                                    placeholder="Enter Email"
+                                                    onkeyup="textFeildVali(this,'^[A-Za-z0-9\\-\\_]{6,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'customer','email','oldCustomer')">
+                                            </div>
+                                        </div>
+
+                                        <!-- email end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- address start -->
+
+                                        <div class="col-6">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="txtAddress" required
+                                                    onkeyup="textFeildVali(this, '^.*$' ,'customer' , 'address','oldCustomer')">
+                                                        </textarea>
+                                                <label for="txtAddress" class="form-label fw-bold">
+                                                    Address : <span class="text-danger"> * </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- address end -->
+
+                                        <!-- note start -->
+
+                                        <div class="col-6">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="textNote"
+                                                    onkeyup="textFeildVali(this, ' ' ,'customer' , 'note','oldCustomer')">
+                                                        </textarea>
+                                                <label for="textNote" class="form-label fw-bold">
+                                                    Note :
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- note end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- button start -->
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                type="reset">
+                                                <i class="fa-solid fa-recycle"></i> Clear</button>
+                                        </div>
+
+                                        <div class="col-3"></div>
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                                disabled id="btnCustomerUpdate" onclick="customerUpdate()">
+                                                <i class="fa-solid fa-wrench"></i>Update</button>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <button type="submit"
+                                                class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                id="btnCustomerSubmit" onclick="customerSubmit()"><i
+                                                    class="fa-solid fa-folder-plus"></i>Add</button>
+
+                                        </div>
+
+                                        <!-- button end -->
+
+                                    </div>
+
+                            </div>
+                            </form>
+                            <!-- form end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- customer add offcanves end -->
+
+    </div>
+
+    <!-- view modal  -->
+
+    <div class="modal" id="customerViewModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title">View Customer Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body div-form">
+                    <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+                    <span class="textlogo gradient-text">SAMANMALI</span>
+
+                    <table id="printCustomerTable" class="table table-hover table-bordered table-striped">
+
+                        <tr>
+                            <td><b>Contact:</b> <br></td>
+                            <td colspan="2"> 0372257260 <br> Samanmali@email.com</td>
+                            <td><b>Address :</b></td>
+                            <td colspan="2"> Bemmulegedara,<br> Narammala. </td>
+                        </tr>
+
+                        <tr>
+                            <th>Customer Name : </th>
+                            <td id="viewCusName" colspan="4"></td>
+                        </tr>
+                        <tr>
+                            <th>Customer Number : </th>
+                            <td id="viewCusNum" colspan="2"></td>
+
+                            <th>Nic : </th>
+                            <td id="viewNic" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Email : </th>
+                            <td id="viewEmail" colspan="2"></td>
+
+                            <th>Mobile : </th>
+                            <td id="viewMobile" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Land Number : </th>
+                            <td id="viewLandNum" colspan="2"></td>
+
+                            <th>Added date time : </th>
+                            <td id="viewAddDateTime" colspan="2"></td>
+
+                        </tr>
+                        <tr>
+                            <th>Address : </th>
+                            <td id="viewAddress" colspan="2"></td>
+
+                            <th>Note : </th>
+                            <td id="viewNote" colspan="2"></td>
+
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="btnPrintRow();">print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- view modal  -->
+
+    <!-- link functioncalling js file -->
+    <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link customer js file -->
+    <script src="controllers/customer.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/navbar.js"></script>
+
+
+</body>
+
+</html>

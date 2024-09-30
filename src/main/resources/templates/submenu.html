@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>SUB MENU MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasSubMenuAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New Sub Menu
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableSubMenu">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Sub Menu Category</th>
+                        <th>Sub Menu Name</th>
+                        <th>Price for One Portion</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- menu add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" data-bs-backdrop="static" tabindex="-1" id="offcanvasSubMenuAdd"
+                aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Sub Menu</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="col-12">
+
+                        <div class="row mt-2">
+                            <div class="row">
+                                <div class="col-12 text-end">
+                                    <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- img area start 
+                        <div class="col-md-5 d-flex align-items-stretch">
+                            <div class="info-wrap w-100 p-5 img formImg"
+                                style="background-image: url(../resources/images/submenu.png);">
+                            </div>
+                        </div>
+                         img area end -->
+
+                            <div class="col-md-7">
+                                <form onsubmit="return false" id="formSubMenu">
+
+                                    <div class="row mt-2">
+                                        <!-- sub menu category start-->
+                                        <div class="col-6">
+                                            <label for="slctSubMenuCategory" class="form label fw-bold mb-2">Sub Menu
+                                                Category : <span class="text-danger">*</span></label>
+                                            <select name="slctCategory" id="slctSubMenuCategory" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','submenu','submenucategory_id','oldSubmenu')">
+                                                <option value="" selected disabled>Select Category</option>
+                                                <option value="Welcome Drink">Welcome Drink </option>
+                                                <option value="Salads">Salads</option>
+                                            </select>
+                                        </div>
+                                        <!-- sub menu category end-->
+
+                                        <!-- Sub menu name start -->
+                                        <div class="col-6">
+                                            <label for="nameTxt" class="form-label fw-bold">Sub Menu Name : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" id="nameTxt" class="form-control" required
+                                                placeholder="Enter Sub Menu Item"
+                                                onkeyup="textFeildVali(this,'^[A-Z][a-zA-Z]*( [A-Z][a-zA-Z]*)*$', 'submenu' , 'name','oldSubmenu')">
+
+                                        </div>
+                                        <!-- Sub menu name end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- sub menu price start -->
+
+                                        <div class="col-6">
+                                            <label for="subMenuPriceTxt" class="form-label fw-bold">Sub Menu Price:
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="subMenuPriceTxt"
+                                                    aria-label="Amount" required placeholder="Enter Price"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'submenu','priceforoneportion','oldSubmenu')">
+                                            </div>
+                                        </div>
+                                        <!-- sub menu price end -->
+
+                                        <!-- Status start -->
+
+                                        <div class="col-6">
+                                            <label for="slctSubMenuStatus" class="form label fw-bold mb-2">Status :
+                                                <span class="text-danger">*</span></label>
+                                            <select name="slctStatus" id="slctSubMenuStatus" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','submenu','submenustatus_id','oldSubmenu')">
+                                                <option value="" selected disabled>Select Status</option>
+                                                <option value="available">available </option>
+                                                <option value="unavailable">unavailable </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Status end -->
+                                    </div>
+                                    <!-- note start -->
+                                    <div class="row mt-2">
+                                        <label for="textNote" class="col-4 col-form-label fw-bold"> Note : <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <textarea class="form-control" id="textNote"
+                                                onkeyup="textFeildVali(this, ' ' ,'submenu' , 'note','oldSubmenu')"></textarea>
+                                        </div>
+                                    </div>
+                                    <!-- note end -->
+
+                                </form>
+                                <!-- form end -->
+                            </div>
+
+                            <!-- inner form start -->
+                            <div class="col-md-5">
+                                <form onsubmit="return false" id="formSubmenuInner">
+
+                                    <!-- Ingredient name start -->
+                                    <div class="row mt-2">
+                                        <label for="nameIngredient" class="col-4 col-form-label fw-bold">
+                                            Ingredient Name:
+                                            <span class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <select name="IngredientName" id="nameIngredient" class="form-select"
+                                                required
+                                                onchange="selectDVali(this,'','submenuhasingredients','ingredients_id');">
+                                                <option value="" selected disabled> </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- Ingredient name end -->
+
+
+                                    <div class="row mt-2">
+
+                                        <!-- qty start -->
+
+                                        <label for="qtyTxt" class="col-4 col-form-label fw-bold">Quantity : <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-8">
+                                            <input type="text" id="qtyTxt" class="form-control" required
+                                                placeholder="Enter qty"
+                                                onkeyup="textFeildVali(this,'^([1-9][0-9]{0,3})|([1-9][0-9]{0,3}[.][0-9]{1,3})$', 'submenuhasingredients','quantity')">
+                                        </div>
+
+                                        <!-- qty end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- button start -->
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                type="reset">
+                                                <i class="fa-solid fa-recycle"></i> Clear</button>
+                                        </div>
+
+                                        <div class="col-3"></div>
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                                disabled id="innerUpdateBtn" onclick="innerUpdate()"><i
+                                                    class="fa-solid fa-wrench"></i> Update</button>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <button type="submit"
+                                                class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                id="innerAddBtn" onclick="innerSubmit()"><i
+                                                    class="fa-solid fa-folder-plus"></i> Add</button>
+                                        </div>
+
+                                        <!-- button end -->
+
+                                    </div>
+
+                                    <!-- table area start -->
+                                    <div class="row mt-2">
+                                        <div class="col-1"></div>
+                                        <div class="col-10">
+
+                                            <!-- table start -->
+                                            <table class="table table-bordered table-striped border-danger"
+                                                id="tableInner">
+                                                <thead class="table-dark">
+
+                                                    <!-- # no index -->
+                                                    <th> # </th>
+                                                    <th>Ingredient Name</th>
+                                                    <th>Quantity</th>
+                                                    <th>Modify</th>
+                                                </thead>
+                                                <tbody class="table-warning">
+
+                                                </tbody>
+                                            </table>
+                                            <!-- table end -->
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <!-- table area end -->
+
+                                </form>
+                            </div>
+                            <!-- inner form end -->
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <!-- button start -->
+
+                            <div class="col-3">
+                                <button class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                    type="reset">
+                                    <i class="fa-solid fa-recycle"></i> Clear</button>
+                            </div>
+
+                            <div class="col-3"></div>
+
+                            <div class="col-3">
+                                <button class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                    disabled id="btnSubmenuUpdate" onclick="submenuUpdate()"><i
+                                        class="fa-solid fa-wrench"></i> Update</button>
+                            </div>
+
+                            <div class="col-3">
+                                <button type="submit"
+                                    class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                    id="btnSubmenuSubmit" onclick="submenuSubmit()"><i
+                                        class="fa-solid fa-folder-plus"></i>
+                                    Add</button>
+                            </div>
+
+                            <!-- button end -->
+
+                        </div>
+                    </div>
+
+                    <!--sub menu add offcanves end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- view modal  -->
+
+    <div class="modal" id="submenuViewModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title">View Sub Menu Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body div-form">
+                    <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+                    <span class="textlogo gradient-text">SAMANMALI</span>
+
+                    <table id="printSubmenuTable" class="table table-hover table-bordered table-striped">
+
+                        <tr>
+                            <td><b>Contact:</b> <br></td>
+                            <td colspan="2"> 0372257260 <br> Samanmali@email.com</td>
+                            <td><b>Address :</b></td>
+                            <td colspan="2"> Bemmulegedara,<br> Narammala. </td>
+                        </tr>
+
+                        <tr>
+                            <th>Sub Menu Category : </th>
+                            <td id="viewSubMenuCat" colspan="2"></td>
+
+                            <th>Sub Menu Name : </th>
+                            <td id="viewSubMenuName" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Price For One Portion : </th>
+                            <td id="viewPrice" colspan="2"></td>
+
+                            <th>Added date time : </th>
+                            <td id="viewAddDateTime" colspan="2"></td>
+
+                        </tr>
+                        <tr>
+
+                            <th>Note : </th>
+                            <td id="viewNote" colspan="4"></td>
+
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="btnPrintRow();">print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- view modal  -->
+
+
+    <!-- link functioncalling js file -->
+    <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link employee js file -->
+    <script src="controllers/submenu.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/navbar.js"></script>
+</body>
+
+</html>

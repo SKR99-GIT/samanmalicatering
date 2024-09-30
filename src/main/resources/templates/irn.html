@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>INGREDIENT RESERVE NOTE MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasIrnAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New IRN
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableIRN">
+                    <thead class="table-dark">
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Supplier Name</th>
+                        <th>Reserve Date</th>
+                        <th>Total Amount</th>
+                        <th>Discount Amount (%)</th>
+                        <th>Net Amount</th>
+                        <th>Supplier Bill Number</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+                        <!-- table body data -->
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- irn add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" style="height: 100% !important" data-bs-backdrop="static" tabindex="-1"
+                id="offcanvasIrnAdd" aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Ingreadient Reserve Note</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="col-md-12">
+                        <div class="row no-gutters">
+                            <!-- img area start -->
+                            <div class="col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap w-100 p-5 img formImg"
+                                    style="background-image: url(../resources/images/irn.png);">
+                                </div>
+                            </div>
+                            <!-- img area end -->
+
+                            <div class="col-md-7">
+                                <!-- form -->
+                                <form onsubmit="return false" id="formIrn">
+
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- supplier name start -->
+                                        <div class="col-6">
+                                            <label for="nameSupplier" class="col-form-label fw-bold"> Supplier
+                                                Name:
+                                                <span class="text-danger">*</span> </label>
+                                            <select name="supplierName" id="nameSupplier" class="form-select" required
+                                                onchange="selectDVali(this,'','irn','supplier_id', 'oldIrn'); getPorderBySup();">
+                                                <option value="" selected disabled> </option>
+                                                <option value="">name1</option>
+                                            </select>
+                                        </div>
+                                        <!-- supplier name end -->
+
+                                        <!-- porder code start -->
+                                        <div class="col-6">
+                                            <label for="slctPorder" class="form label fw-bold mb-2">Purchase Order
+                                                Code :
+                                                <span class="text-danger">*</span></label>
+                                            <select name="porderSlct" id="slctPorder" class="form-select" required
+                                                onchange="selectDVali(this, '','irn','purchaseorder_id', 'oldIrn'); getIngByPorder();">
+                                                <option value="" selected disabled>Select Porder Code</option>
+                                                <option value="pocode">pocode </option>
+                                            </select>
+                                        </div>
+                                        <!-- porder code end -->
+
+                                    </div>
+
+                                    <!-- IRN innner area start -->
+                                    <div class="row mt-2">
+                                        <div class="card p-0 mx-auto" style="width: 97%;">
+                                            <div class="card-header text-light" style="background-color: black;">
+                                                Add Ingreadient :
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <form onsubmit="return false" id="formIrnInner">
+
+                                                    <div class="row mt-2">
+
+                                                        <!-- Ingreadient start -->
+                                                        <div class="col-6">
+                                                            <label for="nameIngreadient" class="col-form-label fw-bold">
+                                                                Ingreadient : <span class="text-danger">*</span></label>
+                                                            <select name="IngreadientName" id="nameIngreadient"
+                                                                class="form-select"
+                                                                onchange="selectDVali(this,'','irnhasingredients','ingredients_id'); generateUnitPrice();">
+                                                                <option value="" selected disabled> Select Ingreadient
+                                                                    Name </option>
+                                                                <option value="">name1</option>
+                                                            </select>
+                                                        </div>
+                                                        <!-- Ingreadient end -->
+
+                                                        <!-- unitPrice start -->
+                                                        <div class="col-5">
+                                                            <label for="unitPrice" class="form-label fw-bold">Unit
+                                                                Price :
+                                                                <span class="text-danger">*</span></label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">Rs.</span>
+                                                                <input class="form-control" type="text" id="unitPrice"
+                                                                    aria-label="Amount" placeholder="Unit Price..."
+                                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'irnhasingredients','unit_price'); ">
+                                                            </div>
+                                                        </div>
+                                                        <div class=" mt-4 col-1">
+                                                            <button type="button"
+                                                                class="form label fw-bold form-control btn btn-primary rounded-pill"
+                                                                id="btnUnitPrice" onclick="changeUnitPrice()"><i
+                                                                    class="fa-solid fa-plus-minus"></i></button>
+                                                        </div>
+                                                        <!-- unitPrice end -->
+                                                    </div>
+
+                                                    <div class="row mt-2">
+
+                                                        <!-- qty start -->
+                                                        <!-- methana 0 enter krnnd bari wennd oni, ek validation eke liyannd -->
+                                                        <div class="col-6">
+                                                            <label for="qtyTxt" class="form-label fw-bold">Quantity :
+                                                                <span class="text-danger">*</span></label>
+                                                            <input type="text" id="qtyTxt" class="form-control"
+                                                                placeholder="Enter Quantity"
+                                                                onkeyup="textQtyValidator();">
+
+                                                        </div>
+                                                        <!-- qty end -->
+
+                                                        <!-- linePrice start -->
+                                                        <div class="col-6">
+                                                            <label for="linePrice" class="form-label fw-bold">Line
+                                                                Price :
+                                                                <span class="text-danger">*</span></label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">Rs.</span>
+                                                                <input class="form-control" type="text" id="linePrice"
+                                                                    aria-label="Amount" placeholder="Line Price..."
+                                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'irnhasingredients','line_price')">
+                                                            </div>
+                                                        </div>
+                                                        <!-- linePrice end -->
+
+                                                    </div>
+
+                                                    <div class="row mt-2">
+
+                                                        <div class="col-6">
+                                                            <label for="batchNumberTxt" class="form-label fw-bold">Batch
+                                                                Number :
+                                                                </label>
+                                                            <input type="text" id="batchNumberTxt" class="form-control"
+                                                                required placeholder="Enter Batch Number"
+                                                                onchange="textFeildVali(this, '' ,'irnhasingredients' , 'batch_number')">
+                                                        </div>
+
+                                                        <div class="col-6">
+                                                            <label for="expireDate" class="form-label fw-bold"> Expire
+                                                                Date : </label>
+                                                            <input type="date" class="form-control" id="expireDate"
+                                                                required
+                                                                onchange="textFeildVali(this, '' ,'irnhasingredients' , 'expiredate')">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mt-2">
+
+                                                        <!-- button start -->
+                                                        <div class="col-7"></div>
+
+                                                        <div class="col-3">
+                                                            <button type="submit"
+                                                                class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                                id="btnInnerSubmit" onclick="innerSubmit()"><i
+                                                                    class="fa-solid fa-folder-plus"></i> Add</button>
+                                                        </div>
+
+                                                        <div class="col-2"></div>
+
+                                                        <!-- button end -->
+                                                    </div>
+                                                </form>
+
+                                                <!-- table area start -->
+                                                <div class="row mt-2">
+                                                    <div class="col-1"></div>
+                                                    <div class="col-10">
+                                                        <!-- table start -->
+                                                        <table class="table table-bordered table-striped border-danger"
+                                                            id="tableInner">
+                                                            <thead class="table-dark">
+
+                                                                <!-- # no index -->
+                                                                <th> # </th>
+                                                                <th>Ingreadient</th>
+                                                                <th>Unit Price</th>
+                                                                <th>Quantity</th>
+                                                                <th>Line Price</th>
+                                                                <th>Modify</th>
+                                                            </thead>
+                                                            <tbody class="table-warning">
+
+                                                            </tbody>
+                                                        </table>
+                                                        <!-- table end -->
+                                                    </div>
+                                                    <div class="col-1"></div>
+                                                </div>
+                                                <!-- table area end -->
+
+                                            </div>
+                                        </div>
+                                        <!-- IRN inner area end -->
+
+                                        <div class="row mt-2">
+
+                                            <!-- total amount start -->
+                                            <div class="col-4">
+                                                <label for="textTotalAmount" class="form-label fw-bold">Total Amount:
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rs.</span>
+                                                    <input class="form-control" type="text" id="textTotalAmount"
+                                                        aria-label="Amount" required placeholder="Amount..."
+                                                        onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'irn','totalamount', 'oldIrn')">
+                                                </div>
+                                            </div>
+                                            <!-- total amount end -->
+
+                                            <!-- discount amount start -->
+                                            <div class="col-4">
+                                                <label for="textDiscountRate" class="form-label fw-bold">Discount
+                                                    Rate :
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" id="textDiscountRate"
+                                                        aria-label="Amount" required
+                                                        onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'irn','discountrate', 'oldIrn'); generateNetAmount();">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                            <!-- discount amount end -->
+
+                                            <!-- net amount start -->
+                                            <div class="col-4">
+                                                <label for="textNetAmount" class="form-label fw-bold">Net Amount:
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rs.</span>
+                                                    <input class="form-control" type="text" id="textNetAmount"
+                                                        aria-label="Amount" required placeholder="Amount..."
+                                                        onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'irn','netamount', 'oldIrn')">
+                                                </div>
+                                            </div>
+                                            <!-- net amount end -->
+                                        </div>
+
+                                        <div class="row mt-2">
+
+                                            <!-- reserve date start -->
+                                            <div class="col-6">
+                                                <label for="reserveDate" class="form-label fw-bold"> Reserve
+                                                    Date : <span class="text-danger">*</span></label>
+                                                <input type="date" class="form-control" id="reserveDate" required
+                                                    onchange="textFeildVali(this, '' ,'irn' , 'reservedate', 'oldIrn')">
+                                            </div>
+                                            <!-- reserve date end -->
+
+                                            <!-- Status start -->
+                                            <div class="col-6">
+                                                <label for="slctIrnStatus" class="form label fw-bold mb-2">Status :
+                                                    <span class="text-danger">*</span></label>
+                                                <select name="irnSlctStatus" id="slctIrnStatus" class="form-select"
+                                                    required
+                                                    onchange="selectDVali(this, '','irn','irnstatus_id', 'oldIrn')">
+                                                    <option value="" selected disabled>Select Status</option>
+                                                    <option value="available">available </option>
+                                                    <option value="delete">delete </option>
+                                                </select>
+                                            </div>
+                                            <!-- Status end -->
+
+                                        </div>
+
+                                        <div class="row mt-2">
+
+                                            <!-- note start -->
+                                            <div class="col-12">
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" id="textNote"
+                                                        onkeyup="textFeildVali(this, '' ,'purchaseorder', 'note', 'oldIrn')">
+                                                    </textarea>
+                                                    <label for="textNote" class="form-label fw-bold">
+                                                        Note :
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <!-- note end -->
+                                        </div>
+
+                                        <div class="row mt-2">
+
+                                            <!-- button start -->
+
+                                            <div class="col-6"></div>
+
+                                            <div class="col-3">
+                                                <button
+                                                    class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                    type="reset">
+                                                    <i class="fa-solid fa-recycle"></i> Clear</button>
+                                            </div>
+
+                                            <div class="col-3">
+                                                <button type="submit"
+                                                    class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                    id="btnIrnSubmit" onclick="irnSubmit()"><i
+                                                        class="fa-solid fa-folder-plus"></i>
+                                                    Add</button>
+                                            </div>
+
+                                            <!-- button end -->
+
+                                        </div>
+                                    </div>
+                            </div>
+                            </form>
+                            <!-- form end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- employee add offcanves end -->
+
+    </div>
+
+      <!-- view modal  -->
+
+      <div class="modal" id="irnViewModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title">View Purchase Order Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body div-form">
+                    <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+                    <span class="textlogo gradient-text">SAMANMALI</span>
+
+                    <table id="printIrnTable" class="table table-hover table-bordered table-striped">
+
+                        <tr>
+                            <td><b>Contact:</b> <br></td>
+                            <td colspan="2"> 0372257260 <br> Samanmali@email.com</td>
+                            <td><b>Address :</b></td>
+                            <td colspan="2"> Bemmulegedara,<br> Narammala. </td>
+                        </tr>
+
+                        <tr>
+                            <th>IRN Code : </th>
+                            <td id="viewIrnCode" colspan="2"></td>
+
+                            <th>Supplier Name : </th>
+                            <td id="viewSupplier" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Purchase Order Code : </th>
+                            <td id="viewPorderCode" colspan="2"></td>
+
+                            <th>Reserve Date : </th>
+                            <td id="viewReserveDate" colspan="2"></td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="5">Ingrediant Details</th>
+                        </tr>
+
+                        <tr>
+                            <td colspan="5">
+                                <table class="table table-hover table-striped table-bordered"
+                                    id="tableIngInner">
+                                    <thead class="table-warning">
+
+                                        <!-- # no index -->
+                                        <th> # </th>
+                                        <th>Ingreadient</th>
+                                        <th>Unit Price</th>
+                                        <th>Quantity</th>
+                                        <th>Line Price</th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <th>Total Amount : </th>
+                            <td id="viewTotal" colspan="2"></td>
+
+                            <th>Net Amount: </th>
+                            <td id="viewNetAmount" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Added date time : </th>
+                            <td id="viewAddDateTime" colspan="2"></td>
+
+                            <th>Status : </th>
+                            <td id="viewStatus" colspan="2"></td>
+                        </tr>
+
+                        <tr>
+                            <th>Note : </th>
+                            <td id="viewNote" colspan="4"></td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="btnPrintRow();">print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- view modal  -->
+
+    <!-- link functioncalling js file -->
+    <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/irn.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/navbar.js"></script>
+</body>
+
+</html>

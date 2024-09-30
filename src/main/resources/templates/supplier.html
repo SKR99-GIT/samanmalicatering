@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>SUPPLIER MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasSupplierAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New Supplier
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableSupplier">
+                    <thead class="table-dark">
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Supplier Name</th>
+                        <th>Mobile</th>
+                        <th>Contact Person Name</th>
+                        <th>Email</th>
+                        <th>Ingrediant</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- supplier add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" style="height: 100% !important" data-bs-backdrop="static" tabindex="-1"
+                id="offcanvasSupplierAdd" aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Supplier</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="col-md-12">
+                        <div class="row no-gutters">
+                            <!-- img area start -->
+                            <div class="col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap w-100 p-5 img formImg"
+                                    style="background-image: url(../resources/images/supplier.png);">
+                                </div>
+                            </div>
+                            <!-- img area end -->
+
+                            <div class="col-md-7">
+                                <!-- form -->
+                                <form onsubmit="return false" id="formSupplier">
+
+                                    <!-- full name start  -->
+                                    <div class="row mt-2">
+                                        <label for="textName" class="col-4 col-form-label fw-bold">Supplier Name : <span
+                                                class="text-danger">*</span> </label>
+                                        <div class="col-12">
+                                            <input type="text" id="textName" class="form-control" required
+                                                placeholder="Enter Full Name"
+                                                onkeyup="textFeildVali(this,'^([A-Z][a-z]{2,15}[\\s]){1,10}([A-Z][a-z]{2,15}){1}$', 'supplier' ,'name','oldSupplier')">
+                                        </div>
+                                    </div>
+                                    <!-- full name end -->
+
+                                    <div class="row mt-2">
+
+                                        <!-- Contact person start -->
+                                        <div class="col-6">
+                                            <label for="personNameTxt" class="form-label fw-bold">Contact Person Name :
+                                                <span class="text-danger">*</span></label>
+                                            <input type="text" id="personNameTxt" class="form-control" required
+                                                placeholder="Enter Contact Person Name"
+                                                onkeyup="textFeildVali(this,'^([A-Z][a-z]{2,15}[\\s]){1,10}([A-Z][a-z]{2,15}){1}$', 'supplier','contactpersonename','oldSupplier')">
+                                        </div>
+                                        <!-- Contact person end -->
+
+                                        <!-- mobile start -->
+                                        <div class="col-6">
+                                            <label for="mobiTxt" class="form-label fw-bold">Mobile Number : <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-mobile"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="mobiTxt" required
+                                                    placeholder="Enter Mobile No"
+                                                    onkeyup="textFeildVali(this,'^[0][7][01245678][0-9]{7}$', 'supplier','mobile','oldSupplier')">
+                                            </div>
+                                        </div>
+                                        <!-- mobile end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- email start -->
+
+                                        <div class="col-4">
+                                            <label for="emailTxt" class="form-label fw-bold">Email : <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-envelope"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="emailTxt" required
+                                                    placeholder="Enter Email"
+                                                    onkeyup="textFeildVali(this,'^[A-Za-z0-9\\-\\_]{6,20}[@][a-z]{3,10}[.][a-z]{2,3}$', 'supplier','email','oldSupplier')">
+                                            </div>
+                                        </div>
+
+                                        <!-- email end -->
+
+                                        <!-- land nbr start -->
+
+                                        <div class="col-4">
+                                            <label for="landTxt" class="form-label fw-bold"> Land Number : </label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-phone"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="landTxt"
+                                                    placeholder="Enter Land No"
+                                                    onkeyup="textFeildVali(this,'^[0][1234568][12345678][0-9]{7}$','supplier','landno','oldSupplier')">
+                                            </div>
+                                        </div>
+
+                                        <!-- land nbr end -->
+
+                                        <!-- address start -->
+
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="txtAddress" required
+                                                    onkeyup="textFeildVali(this, '^.*$' ,'supplier' , 'address','oldSupplier')">
+                                            </textarea>
+                                                <label for="txtAddress" class="form-label fw-bold">
+                                                    Address : <span class="text-danger"> * </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- address end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- brn start -->
+                                        <div class="col-4">
+                                            <label for="brnTxt" class="form-label fw-bold">BRN :
+                                                <span class="text-danger">*</span></label>
+                                            <input type="text" id="brnTxt" class="form-control" required
+                                                placeholder="Enter BRN"
+                                                onkeyup="textFeildVali(this,'^[0-9]+(\.[0-9]+)?$', 'supplier','brn','oldSupplier')">
+                                        </div>
+                                        <!-- brn end -->
+
+                                        <!-- supplier status start  -->
+
+                                        <div class="col-4">
+                                            <label for="slctSupplierStatus" class="form label fw-bold">Supplier Status :
+                                                <span class="text-danger">*</span></label>
+                                            <select name="slctSupplier" id="slctSupplierStatus" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','supplier','supplierstatus_id','oldSupplier')">
+                                                <option value="" selected disabled>Select Status</option>
+                                                <option value="available">available</option>
+                                                <option value="unavailable">unavailable</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- supplier status end  -->
+
+                                        <!-- note start -->
+
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="textNote"
+                                                    onkeyup="textFeildVali(this, ' ' ,'supplier' , 'note','oldSupplier')">
+
+                                                        </textarea>
+                                                <label for="textNote" class="form-label fw-bold">
+                                                    Note :
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- note end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <div class="row mt-2">
+                                            <!-- ingredieant area start -->
+                                            <div class="card p-0 mx-auto" style="width: 97%;">
+                                                <div class="card-header text-light" style="background-color: black;">
+                                                    Add Ingrediants :
+                                                </div>
+                                                <div class="card-body p-2">
+
+                                                    <div class="row mt-2">
+                                                        <!-- Ingredient category start -->
+                                                        <div class="col-12">
+                                                            <label for="slctIngrediantCategory"
+                                                                class="form label fw-bold mb-2">Ingrediant
+                                                                Category : <span class="text-danger">*</span></label>
+                                                            <select name="slctCategory" id="slctIngrediantCategory"
+                                                                class="form-select"
+                                                                onchange="getIngredientsByCategory()">
+                                                                <option value="" selected disabled>Select Category
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <!-- Ingrediants category end  -->
+                                                    </div>
+
+                                                    <!-- Ingrediants select start -->
+                                                    <div class="row mt-2">
+                                                        <div class="col-5 p-4">
+                                                            <!-- select start -->
+                                                            <label for="allIngrediant" class="form-label">All
+                                                                Ingrediants : </label>
+                                                            <select class="form-select" size="10"
+                                                                style="background-color: rgba(254, 245, 75, 0.573);"
+                                                                id="allIngrediant"> </select>
+                                                            <!-- select end -->
+                                                        </div>
+                                                        <!-- buttons start -->
+                                                        <div class="col-2 p-4 text-center">
+                                                            <input type="button" class="btn btn-dark mt-5"
+                                                                style="width:45px" onclick="btnAddSelectIngrediant();"
+                                                                value=">"> <br> <br>
+                                                            <input type="button" class="btn btn-dark" style="width:45px"
+                                                                onclick="btnAddAll();" value=">>"> <br> <br>
+                                                            <input type="button" class="btn btn-dark" style="width:45px"
+                                                                onclick="btnRemoveSelectIngrediant();" value="<"> <br>
+                                                            <br>
+                                                            <input type="button" class="btn btn-dark" style="width:45px"
+                                                                onclick="btnRemoveAll()" value="<<"> <br> <br>
+                                                        </div>
+                                                        <!-- buttons end -->
+                                                        <div class="col-5 p-4">
+                                                            <!-- select start -->
+                                                            <label for="slctIngrediant" class="form-label">Selected
+                                                                Ingrediant : </label>
+                                                            <select class="form-select" size="10"
+                                                                style="background-color: rgba(254, 245, 75, 0.573);"
+                                                                id="slctIngrediant"></select>
+                                                            <!-- select end -->
+                                                        </div>
+                                                    </div>
+                                                    <!-- Ingrediants select end -->
+                                                </div>
+                                            </div>
+                                            <!-- Ingrediants area end -->
+                                        </div>
+
+                                        <div class="row mt-2">
+                                            <!-- button start -->
+                                            <div class="col-3">
+                                                <button
+                                                    class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                    type="reset">
+                                                    <i class="fa-solid fa-recycle"></i> Clear</button>
+                                            </div>
+
+                                            <div class="col-3"></div>
+
+                                            <div class="col-3">
+                                                <button
+                                                    class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                                    disabled id="btnSupplierUpdate" onclick="supplierUpdate()">
+                                                    <i class="fa-solid fa-wrench"></i> Update</button>
+                                            </div>
+
+                                            <div class="col-3">
+                                                <button type="submit"
+                                                    class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                    id="btnSupplierSubmit" onclick="supplierSubmit()"><i
+                                                        class="fa-solid fa-folder-plus"></i> Add</button>
+                                            </div>
+                                            <!-- button end -->
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- form end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- supplier add offcanves end -->
+
+        </div>
+
+        <!-- view modal in supplier start -->
+
+        <div class="modal" id="supplierViewModal" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title">View Supplier Details</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body div-form">
+                        <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+                        <span class="textlogo gradient-text">SAMANMALI</span>
+
+                        <table id="printSupplierTable" class="table table-hover table-bordered table-striped">
+
+                            <tr>
+                                <td><b>Contact:</b> <br></td>
+                                <td colspan="2"> 0372257260 <br> Samanmali@email.com</td>
+                                <td><b>Address :</b></td>
+                                <td colspan="2"> Bemmulegedara,<br> Narammala. </td>
+                            </tr>
+
+                            <tr>
+                                <th>Supplier Name : </th>
+                                <td id="viewSupName" colspan="4"></td>
+                            </tr>
+
+                            <tr>
+                                <th>Contact Person Name : </th>
+                                <td id="viewContactPerson" colspan="2"></td>
+
+                                <th>Mobile : </th>
+                                <td id="viewMobile" colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <th>Email : </th>
+                                <td id="viewEmail" colspan="2"></td>
+
+                                <th>Land Number : </th>
+                                <td id="viewLand" colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <th>Address : </th>
+                                <td id="viewAddress" colspan="2"></td>
+
+                                <th>BRN : </th>
+                                <td id="viewBRN" colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <th>Ingredients : </th>
+                                <td id="viewIng" colspan="4"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="btnPrintRow();"> print </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- view modal in supplier end -->
+
+        <!-- link functioncalling js file -->
+        <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+        <!-- link validation js file -->
+        <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+        <!-- link commonFunction file  -->
+        <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+        <!-- link employee js file -->
+        <script src="controllers/supplier.js"></script>
+
+        <!-- link js file -->
+        <script src="controllers/navbar.js"></script>
+</body>
+
+</html>

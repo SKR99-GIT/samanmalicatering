@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>MONTHLY PAYMENT REPORTS</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- report element -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+
+            <div class="col-10 text-end">
+                <button class="btn btn-warning" type="button" onclick="monthlyPayRepoTablePrint();"
+                    style="margin-top: 30px;">
+                    <i class="fa-solid fa-print fa-beat"> </i> Print Table
+                </button>
+            </div>
+
+            <div class="col-1"></div>
+        </div>
+        <!-- report element -->
+
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableMonthlyPaymentReport">
+                    <thead class="table-dark">
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Reservation Code</th>
+                        <th>Bill Number</th>
+                        <th>Payment Type</th>
+                        <th>Total Amount</th>
+                        <th>Paid Amount</th>
+                        <th>Balance Amount</th>
+                        <th>Payment Method</th> 
+                    </thead>
+                    <tbody class="table-warning">
+                        <!-- table body data -->
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+        </div>
+    </div>
+    
+
+    <!-- link functioncalling js file -->
+    <script src="/controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="/controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="/controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link js file -->
+    <script src="/controllers/monthlypaymentreport.js"></script>
+
+    <!-- link js file -->
+    <script src="/controllers/navbar.js"></script>
+</body>
+
+</html>

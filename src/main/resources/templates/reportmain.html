@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>REPORTS</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <div class="row-mt2">
+            <div class="col-md-12">
+                <div class="row no-gutters">
+                    <!-- img area start -->
+                    <div class="col-md-7 d-flex align-items-stretch">
+                        <div class="info-wrap w-100 p-5 img formImg"
+                            style="background-image: url(../resources/images/report.png);">
+                        </div>
+                    </div>
+                    <!-- img area end -->
+
+                    <div class="col-md-5">
+
+                        <button type="button" class="btn btn-gradient"
+                            onclick="window.location.replace('/report/pendingemployee')">
+                            <i class="fa-solid fa-chart-column"></i> System User Report </button>
+
+                        <button type="button" class="btn btn-gradient"
+                            onclick="window.location.replace('/report/paymentreport')">
+                            <i class="fa-solid fa-chart-column"></i> Payment Report </button>
+
+                        <button type="button" class="btn btn-gradient"
+                            onclick="window.location.replace('/report/dailypaymentreport')">
+                            <i class="fa-solid fa-chart-column"></i> Daily Payment Report </button>
+
+                        <button type="button" class="btn btn-gradient"
+                            onclick="window.location.replace('/report/monthlypaymentreport')">
+                            <i class="fa-solid fa-chart-column"></i> Monthly Payment Report </button>
+
+                        <button type="button" class="btn btn-gradient"
+                            onclick="window.location.replace('/report/reservationreport')">
+                            <i class="fa-solid fa-chart-column"></i> Reservation Report (Selected Date Range)</button>
+
+                        <button type="button" class="btn btn-gradient"
+                            onclick="window.location.replace('/report/monthlyreservationreport')">
+                            <i class="fa-solid fa-chart-column"></i> Monthly Reservation Report </button>
+
+                        <button type="button" class="btn btn-gradient"
+                            onclick="window.location.replace('/report/resereportfunctiontype')">
+                            <i class="fa-solid fa-chart-column"></i> Reservation Report </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- link functioncalling js file -->
+    <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+
+    <!-- link customer js file -->
+    <script src="controllers/reportmain.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/navbar.js"></script>
+
+
+</body>
+
+</html>

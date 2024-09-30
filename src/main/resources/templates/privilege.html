@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>PRIVILEGE MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasPeivilegeForm" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i>Privilege Form
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tablePrivilege">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Role</th>
+                        <th>Module</th>
+                        <th>Select</th>
+                        <th>Insert</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- table area end -->
+
+        <!-- privilege add offcanves start -->
+        <div class="offcanvas offcanvas-top" data-bs-backdrop="static" tabindex="-1" id="offcanvasPeivilegeForm"
+            aria-labelledby="staticBackdropLabel">
+            <div class="offcanvas-header">
+                <h2 class="gradient-text">Manage Privilege</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+
+                <div class="col-md-12">
+                    <div class="row no-gutters">
+                        <!-- img area start -->
+                        <div class="col-md-5 d-flex align-items-stretch">
+                            <div class="info-wrap w-100 p-5 img formImg"
+                                style="background-image: url(../resources/images/privilege.jpg);">
+                            </div>
+                        </div>
+                        <!-- img area end -->
+
+                        <div class="col-md-7">
+                            <!-- form start -->
+                            <form onsubmit="return false" id="formPrivilege">
+
+                                <!-- Role start -->
+                                <div class="row mt-2">
+                                    <label for="slctRole" class="col-4 col-form-label"> Role: </label>
+                                    <div class="col-8">
+                                        <select name="roleSlct" id="slctRole" class="form-select" required
+                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                            data-bs-title="Select Role" onchange="selectDVali(this,'','privilege','role_id','oldPrivilege');
+                            generateModuleList()">
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Role end -->
+
+                                <!-- module start -->
+                                <div class="row mt-2">
+                                    <label for="slctModule" class="col-4 col-form-label"> Module: </label>
+                                    <div class="col-8">
+                                        <select name="moduleSlct" id="slctModule" class="form-select" required
+                                            data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                            data-bs-title="Select Module"
+                                            onchange="selectDVali(this,'','privilege','module_id','oldPrivilege');">
+                                            <option value="" selected disabled> </option>
+                                            <option value="EMPLOYEE">EMPLOYEE</option>
+                                            <option value="PRIVILEGE">PRIVILEGE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- module end -->
+
+                                <!-- select priv start-->
+                                <div class="row mt-2">
+                                    <label class="col-4 col-form-label"> Select : </label>
+                                    <div class="col-8">
+                                        <div class="form-check">
+                                            <label for="selectPrivi" class="form-check-label" id="labelSelectPrivi">
+                                                Select Privilege Not Granted
+                                            </label>
+                                            <input class="form-check-input" type="checkbox" id="selectPrivi" onchange="checkPrivi(selectPrivi,' ','privilege','priviselect' , true , false,
+                             labelSelectPrivi, 'Select Privilege <b>Granted</b>','Select Privilege Not Granted')">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- select priv end -->
+
+                                <!-- insert priv start -->
+                                <div class="row mt-2">
+                                    <label class="col-4 col-form-label"> Insert : </label>
+                                    <div class="col-8">
+                                        <div class="form-check">
+                                            <label for="insertPrivi" class="form-check-label" id="labelInsertPrivi">
+                                                Insert Privilege Not Granted
+                                            </label>
+                                            <p id="textPrivi" style="display:none">Granted</p>
+                                            <input class="form-check-input" type="checkbox" id="insertPrivi" onchange="checkPrivi(insertPrivi,' ','privilege','priviinsert',true,false,
+                           labelInsertPrivi,'Insert Privilege <b>Granted</b>','Insert Privilege Not Granted' )">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- insert priv end -->
+
+                                <!-- update priv start -->
+                                <div class="row mt-2">
+                                    <label class="col-4 col-form-label"> Update : </label>
+                                    <div class="col-8">
+                                        <div class="form-check">
+                                            <label for="updatePrivi" class="form-check-label" id="labelUpdatePrivi">
+                                                Update Privilege Not Granted
+                                            </label>
+                                            <input class="form-check-input" type="checkbox" id="updatePrivi" onchange="checkPrivi(updatePrivi,' ','privilege','priviupdate',true,false,
+                            labelUpdatePrivi,'Update Privilege <b>Granted</b>','Update Privilege Not Granted' )">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- update priv end -->
+
+                                <!-- delete priv start -->
+                                <div class="row mt-2">
+                                    <label class="col-4 col-form-label"> Delete : </label>
+                                    <div class="col-8">
+                                        <div class="form-check">
+                                            <label for="deletePrivi" class="form-check-label" id="labelDeletePrivi">
+                                                Delete Privilege Not Granted
+                                            </label>
+                                            <input class="form-check-input" type="checkbox" id="deletePrivi" onchange="checkPrivi(deletePrivi,' ','privilege','prividelete',true,false,
+                            labelDeletePrivi,'Delete Privilege <b>Granted</b>','Delete Privilege Not Granted' )">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- delete priv end -->
+
+                                <!-- button start -->
+                                <div class="row mt-2">
+
+                                    <div class="col-3">
+                                        <button
+                                            class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                            type="reset">
+                                            <i class="fa-solid fa-recycle"></i> Clear</button>
+                                    </div>
+
+                                    <div class="col-3"></div>
+
+                                    <div class="col-3">
+                                        <button
+                                            class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                            disabled id="btnPriviUpdate" onclick="privilegeUpdate()">
+                                            <i class="fa-solid fa-wrench"></i> Update</button>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <button type="submit"
+                                            class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                            id="btnPriviAdd" onclick="privilegeSubmit()"><i
+                                                class="fa-solid fa-folder-plus"></i> Add</button>
+
+                                    </div>
+                                </div>
+                                <!-- button end -->
+
+                            </form>
+                            <!--   form end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- privilege add offcanves end -->
+
+    </div>
+
+
+    <!-- link functioncalling js file -->
+    <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link employee js file -->
+    <script src="controllers/privilege.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/navbar.js"></script>
+
+</body>
+
+</html>

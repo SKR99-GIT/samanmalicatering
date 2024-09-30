@@ -1,0 +1,284 @@
+<!-- Navbar start-->
+<nav th:fragment="topnavbarFragment">
+    <i class="fa-solid fa-bars"></i>
+    <a href="/dashboard" class="nav-link">Modules</a>
+    <a href="/report" class="nav-link" style="margin-right: 1000px;">Reports</a>
+    <!-- <form style="background-image: none; border: none;" action="#">
+        <div class="from-input">
+            <input type="search" placeholder="Search...">
+            <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </form> -->
+     <a href="" class="notification">
+        <i class="fa-solid fa-bell"></i>
+        <span class="num">5</span>
+    </a>
+    <button type="button" class="btn" style="background-color: #eee;" data-bs-toggle="modal" 
+        data-bs-target="#userEditModal">
+        <i class="fa-solid fa-gears"></i>
+    </button>
+    <a href="#" th:text="${logusername}"></a>
+    <a href="#" class="profile">
+        <img src="../resources/images/user.png">
+    </a>
+</nav>
+<!-- Navbar end-->
+
+<section id="sidebar" th:fragment="sidebarFragment" class="hide">
+    <a href="/dashboard" class="smlogo">
+        <!--  width="90" height="73" viewBox="0 0 90 73" fill="none" -->
+        <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+        <span class="textlogo gradient-text">SAMANMALI</span>
+    </a>
+    <ul class="side-menu top">
+        <li class="nav-item" th:attr="class=${activeOne == 'dashboard' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/dashboard">
+                <i class="fa-solid fa-gauge"> </i>
+                <span class="text"> Dashboard</span>
+            </a>
+        </li>
+        
+        <li class="nav-item" th:attr="class=${activeOne == 'customer' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/customer">
+                <i class="fa-solid fa-users-rectangle"> </i>
+                <span class="text"> Customer</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'reservation' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/reservation">
+                <i class="fa-solid fa-bell-concierge"> </i>
+                <span class="text"> Reservation</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'payment' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/payment">
+                <i class="fa-solid fa-money-bill"> </i>
+                <span class="text"> Payment</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'kitchen' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/kitchen">
+                <i class="fa-solid fa-kitchen-set"></i>
+                <span class="text"> Kitchen</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'delivery' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/delivery">
+                <i class="fa-solid fa-truck"></i>
+                <span class="text"> delivery</span>
+            </a>
+        </li>
+
+        <li class="nav-item" th:attr="class=${activeOne == 'supplier' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/supplier">
+                <i class="fa-solid fa-boxes-packing"></i>
+                <span class="text"> Supplier</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'porder' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/porder">
+                <i class="fa-solid fa-box"></i>
+                <span class="text"> Purchase order</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'irn' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/irn">
+                <i class="fa-solid fa-file-circle-check"></i>
+                <span class="text"> Ingredient Reserve Note</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'supplierpayment' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/supplierpayment">
+                <i class="fa-solid fa-cash-register"></i>
+                <span class="text"> Suppllier payment</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'inventory' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/inventory">
+                <i class="fa-solid fa-warehouse"></i>
+                <span class="text"> Inventory</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'garbage' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/garbage">
+                <i class="fa-solid fa-recycle"></i>
+                <span class="text"> Garbage removal</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'ingredients' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/ingredients">
+                <i class="fa-solid fa-pepper-hot"></i>
+                <span class="text"> Ingredient</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'submenu' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/submenu">
+                <i class="fa-solid fa-bowl-food"></i>
+                <span class="text"> Submenu</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'menu' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/menu">
+                <i class="fa-solid fa-utensils"> </i>
+                <span class="text"> Menu</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'service' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/service">
+                <i class="fa-solid fa-circle-plus"> </i>
+                <span class="text"> Service</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'hall' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/hall">
+                <i class="fa-solid fa-hotel"> </i>
+                <span class="text"> Function Hall</span>
+            </a>
+        </li>
+        
+        <li class="nav-item" th:attr="class=${activeOne == 'employee' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/employee">
+                <i class="fa-solid fa-brands fa-black-tie"> </i>
+                <span class="text"> Employee</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'user' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/user">
+                <i class="fa-solid fa-user"></i>
+                <span class="text"> User</span>
+            </a>
+        </li>
+        <li class="nav-item" th:attr="class=${activeOne == 'privilege' ? 'active nav-item' : 'nav-item' }">
+            <a class="nav-link" href="/privilege">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span class="text"> Privilege</span>
+            </a>
+        </li>
+    </ul>
+
+
+    <ul class="side-menu">
+        <li class="nav-item">
+            <a onclick="Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to sign out.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, sign out!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.replace('/logout');
+                }
+            });"
+             class="nav-link" href="#">
+                <i class="fa-solid fa-arrow-right-from-bracket text-danger"></i>
+                <span class="text text-danger">Log Out</span>
+            </a>
+        </li>
+    </ul>
+</section>
+
+<div th:fragment="userEditModal" class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="userEditModalLabel">Edit User Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return false" id="formUserDetailsEdit">
+
+                    <!-- user photo -->
+                    <div class="row mt-2">
+                        <div class="col-3 text-end fw-bold"></div>
+
+                        <div class="col-3 text-center">
+                            <img src="../resources/images/user.png"
+                                style="width:  75px; height: 75px; border-radius: 50px;" id="imgUserPhoto">
+                            <input type="file" class="d-none" id="fileUserPhoto">
+                        </div>
+                        <div class="col-3">
+                            <button type="button" class="btn btn-primary fw-bold w-100"
+                                onclick="fileUserPhoto.click();">Select Image</button><br>
+                            <button type="button"
+                                class=" mt-1 btn btn-primary fw-bold w-100">Clear Image</button>
+                        </div>
+                        <div class="col-3 text-end fw-bold"></div>
+                    </div>
+                    <!-- user photo -->
+
+                    <!-- username start -->
+                        <div class="row mt-4">
+                            <label for="textUserName" class="col-3 col-form-label fw-bold">User Name : <span
+                                    class="text-danger">*</span> </label>
+                            <div class="col-8">
+                                <input type="text" id="textUserName" class="form-control" required
+                                    placeholder="Enter User Name" >
+                            </div>
+                            <div class="col-1">
+                                <button type="button"
+                                    class="form label fw-bold form-control btn btn-primary rounded-pill"
+                                    id="btnUsernameEdit"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </div>
+                        </div>
+                    <!-- username end -->
+
+                    <!-- email start -->
+                    <div class="row mt-2">
+                        <label for="textEmail" class="col-3 col-form-label fw-bold">Email : <span
+                                class="text-danger">*</span> </label>
+                        <div class="col-8">
+                            <input type="email" id="textEmail" class="form-control" required
+                                placeholder="Enter Email" >
+                        </div>
+                        <div class="col-1">
+                            <button type="button"
+                                class="form label fw-bold form-control btn btn-primary rounded-pill"
+                                id="btnEmailEdit"><i class="fa-solid fa-pen-to-square"></i></button>
+                        </div>
+                    </div>
+                    <!-- email end -->
+
+                    <!-- password start -->
+                    <div class="row mt-2">
+                        <label for="textPassword" class="col-3 col-form-label fw-bold">Password : <span
+                                class="text-danger">*</span> </label>
+                        <div class="col-8">
+                            <input type="password" id="textPassword" class="form-control" required
+                                placeholder="Enter Passowrd" >
+                        </div>
+                        <div class="col-1">
+                            <button type="button"
+                                class="form label fw-bold form-control btn btn-primary rounded-pill"
+                                id="btnPasswordEdit"><i class="fa-solid fa-pen-to-square"></i></button>
+                        </div>
+                    </div>
+                    <!-- password end -->
+
+                    <!-- RE password start -->
+                    <div class="row mt-2">
+                        <label for="textREPassword" class="col-3 col-form-label fw-bold">Re-Type Password : <span
+                                class="text-danger">*</span> </label>
+                        <div class="col-8">
+                            <input type="password" id="textREPassword" class="form-control" required
+                                placeholder="Re-Type Passowrd" >
+                        </div>
+                        <div class="col-1">
+                            <button type="button"
+                                class="form label fw-bold form-control btn btn-primary rounded-pill"
+                                id="btnRepassword"><i class="fa-solid fa-pen-to-square"></i></button>
+                        </div>
+                    </div>
+                    <!-- RE password end -->
+
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

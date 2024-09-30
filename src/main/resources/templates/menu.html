@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>MENU MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasMenuAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New Menu
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableMenu">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Function Type</th>
+                        <th>Menu Category</th>
+                        <th>Menu Name</th>
+                        <th>Sub Menu Item</th>
+                        <th>Price Without Hall</th>
+                        <th>Price With Hall</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- menu add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" style="height: 100% !important" data-bs-backdrop="static" tabindex="-1"
+                id="offcanvasMenuAdd" aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Menu</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <!-- img area start -->
+                            <div class="col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap w-100 p-5 img formImg"
+                                    style="background-image: url(../resources/images/menu.png);">
+                                </div>
+                            </div>
+                            <!-- img area end -->
+
+                            <div class="col-md-7">
+                                <form onsubmit="return false" id="formMenu">
+
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <span class="fw-bold"> <span class="text-danger">*</span>Required</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- function type start-->
+                                        <div class="col-4">
+                                            <label for="slctFunctionType" class="form label fw-bold mb-2">Fuction Type :
+                                                <span class="text-danger">*</span></label>
+                                            <select id="slctFunctionType" class="form-select" required
+                                                onchange="selectDVali(this, '','menu','functiontype_id', 'oldMenu'); generateMenuName();">
+                                                <option value="" selected disabled>Select Function Type</option>
+                                            </select>
+                                        </div>
+                                        <!-- function type end-->
+
+                                        <!-- menu category start-->
+                                        <div class="col-4">
+                                            <label for="slctMenuCategory" class="form label fw-bold mb-2">Menu Category
+                                                :
+                                                <span class="text-danger">*</span></label>
+                                            <select name="menuSlctCategory" id="slctMenuCategory" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','menu','menucategory_id', 'oldMenu'); generateMenuName();">
+                                                <option value="" selected disabled>Select Category</option>
+                                            </select>
+                                        </div>
+                                        <!-- menu category end-->
+
+                                        <!-- menu name start -->
+                                        <div class="col-4">
+                                            <label for="nameTxt" class="form-label fw-bold">Menu Name : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" id="nameTxt" class="form-control" required disabled
+                                                placeholder="Menu Name"
+                                                onkeyup="textFeildVali(this,'^[A-Z][a-zA-Z]*( [A-Z][a-zA-Z]*)*$', 'menu' , 'name', 'oldMenu')">
+
+                                        </div>
+                                        <!-- menu name end -->
+
+                                    </div>
+                                    <div class="row mt-2">
+                                        <!-- sub menu area start -->
+                                        <div class="card p-0 mx-auto" style="width: 97%;">
+                                            <div class="card-header text-light" style="background-color: black;">
+                                                Add Sub Menu :
+                                            </div>
+                                            <div class="card-body p-2">
+
+                                                <div class="row mt-2">
+                                                    <!-- sub menu category start -->
+                                                    <div class="col-12">
+                                                        <label for="slctSubMenuCategory"
+                                                            class="form label fw-bold mb-2">Sub
+                                                            Menu
+                                                            Category : <span class="text-danger">*</span></label>
+                                                        <select name="slctCategory" id="slctSubMenuCategory"
+                                                            class="form-select" onchange="getSubMenuByCategory()">
+                                                            <option value="" selected disabled>Select Category</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- sub menu category end  -->
+                                                </div>
+
+                                                <!-- sub menu select start -->
+                                                <div class="row mt-2">
+                                                    <div class="col-5 p-4">
+                                                        <!-- select start -->
+                                                        <label for="allSubMenu" class="form-label">All Sub Menus :
+                                                        </label>
+                                                        <select class="form-select" size="10"
+                                                            style="background-color: rgba(254, 245, 75, 0.573);"
+                                                            id="allSubMenu"> </select>
+                                                        <!-- select end -->
+                                                    </div>
+                                                    <!-- buttons start -->
+                                                    <div class="col-2 p-4 text-center">
+                                                        <input type="button" class="btn btn-dark mt-5"
+                                                            style="width:45px" onclick="btnAddSelectSubMenu();"
+                                                            value=">"> <br> <br>
+                                                        <input type="button" class="btn btn-dark" style="width:45px"
+                                                            onclick="btnAddAll();" value=">>"> <br> <br>
+                                                        <input type="button" class="btn btn-dark" style="width:45px"
+                                                            onclick="btnRemoveSelectSubMenu();" value="<"> <br> <br>
+                                                        <input type="button" class="btn btn-dark" style="width:45px"
+                                                            onclick="btnRemoveAll()" value="<<"> <br> <br>
+                                                    </div>
+                                                    <!-- buttons end -->
+                                                    <div class="col-5 p-4">
+                                                        <!-- select start -->
+                                                        <label for="slctSubMenu" class="form-label">Selected Sub Menu :
+                                                        </label>
+                                                        <select class="form-select" size="10"
+                                                            style="background-color: rgba(254, 245, 75, 0.573);"
+                                                            id="slctSubMenu"></select>
+                                                        <!-- select end -->
+                                                    </div>
+                                                </div>
+                                                <!-- sub menu select end -->
+                                            </div>
+                                        </div>
+                                        <!-- sub menu area end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- Menu Price start -->
+                                        <div class="col-4">
+                                            <label for="PriceWithoutHallTxt" class="form-label fw-bold">Menu Price
+                                                (Without
+                                                Hall): <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="PriceWithoutHallTxt"
+                                                    aria-label="Amount" required placeholder="Enter Price"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'menu','pricewithouthall', 'oldMenu')">
+                                            </div>
+                                        </div>
+                                        <!-- Menu Price end -->
+
+                                        <!-- Menu Price start -->
+
+                                        <div class="col-4">
+                                            <label for="PriceWithHallTxt" class="form-label fw-bold">Menu Price (With
+                                                Hall):
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rs.</span>
+                                                <input class="form-control" type="text" id="PriceWithHallTxt"
+                                                    aria-label="Amount" required placeholder="Enter Price"
+                                                    onkeyup="textFeildVali(this, '^[0-9]+(\.[0-9]+)?$' , 'menu','pricewithhall', 'oldMenu')">
+                                            </div>
+                                        </div>
+                                        <!-- Menu Price end -->
+
+                                        <!-- Status start -->
+
+                                        <div class="col-4">
+                                            <label for="slctMenuStatus" class="form label fw-bold mb-2">Status :
+                                                <span class="text-danger">*</span></label>
+                                            <select name="menuSlctStatus" id="slctMenuStatus" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','menu','menustatus_id', 'oldMenu')">
+                                                <option value="" selected disabled>Select Status</option>
+                                                <option value="available">available </option>
+                                                <option value="unavailable">unavailable </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Status end -->
+                                    </div>
+                                    <!-- note start -->
+                                    <div class="row mt-2">
+                                        <label for="textNote" class="col-4 col-form-label fw-bold"> Note : </label>
+                                        <div class="col-8">
+                                            <textarea class="form-control" id="textNote"
+                                                onkeyup="textFeildVali(this, ' ' ,'menu' , 'note', 'oldMenu')"></textarea>
+                                        </div>
+                                    </div>
+                                    <!-- note end -->
+
+                                    <div class="row mt-2">
+
+                                        <!-- button start -->
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                type="reset">
+                                                <i class="fa-solid fa-recycle"></i> Clear</button>
+                                        </div>
+
+                                        <div class="col-3"></div>
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                                disabled id="btnMenuUpdate" onclick="menuUpdate()"><i
+                                                    class="fa-solid fa-wrench"></i> Update</button>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <button type="submit"
+                                                class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                id="btnMenuSubmit" onclick="menuSubmit()"><i
+                                                    class="fa-solid fa-folder-plus"></i> Add</button>
+                                        </div>
+
+                                        <!-- button end -->
+
+                                    </div>
+                                </form>
+                                <!-- form end -->
+                            </div>
+                            <!-- menu add offcanves end -->
+                        </div>
+
+                        <!-- link functioncalling js file -->
+                        <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+                        <!-- link validation js file -->
+                        <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+                        <!-- link commonFunction file  -->
+                        <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+                        <!-- link js file -->
+                        <script src="controllers/menu.js"></script>
+
+                        <!-- link js file -->
+                        <script src="controllers/navbar.js"></script>
+</body>
+
+</html>

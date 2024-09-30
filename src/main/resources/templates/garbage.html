@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>GARBAGE REMOVAL</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasGarbageAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New Details
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableGarbage">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Ingreadient</th>
+                        <th>Quntity</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" data-bs-backdrop="static" tabindex="-1" id="offcanvasGarbageAdd"
+                aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Garbage Removal</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="col-md-12">
+                        <div class="row no-gutters">
+
+                            <!-- img area start -->
+                            <div class="col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap w-100 p-5 img formImg"
+                                    style="background-image: url(../resources/images/garbage.jpg);">
+                                </div>
+                            </div>
+                            <!-- img area end -->
+
+                            <div class="col-md-7">
+                                <!-- form -->
+                                <form onsubmit="return false" id="formGarbage">
+
+                                    <div class="row mt-2">
+                                        <!-- Ingreadient inventory name start -->
+                                        <div class="col-6">
+                                            <label for="nameIngreadient" class="col-form-label fw-bold"> Ingreadient
+                                                Name :
+                                                <span class="text-danger">*</span> </label>
+                                            <select name="supplierName" id="nameIngreadient" class="form-select"
+                                                required
+                                                onchange="selectDVali(this,'','garbage','ingredientinvetory_id','oldGarbage');">
+                                                <option value="" selected disabled> </option>
+                                                <option value="">name1</option>
+                                            </select>
+                                        </div>
+                                        <!-- Ingreadient inventory name end -->
+
+                                        <!-- reason start -->
+                                        <div class="col-6">
+                                            <label for="reasonTxt" class="form-label fw-bold">Reason :
+                                                <span class="text-danger">*</span></label>
+                                            <input type="text" id="reasonTxt" class="form-control" required
+                                                placeholder="Enter Reason"
+                                                onkeyup="textFeildVali(this, '' , 'garbage','reason','oldGarbage')">
+                                        </div>
+                                        <!-- reason end -->
+
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- qty start -->
+                                        <!-- methana 0 enter krnnd bari wennd oni, ek validation eke liyannd -->
+                                        <div class="col-6">
+                                            <label for="qtyTxt" class="form-label fw-bold">Quantity :
+                                                <span class="text-danger">*</span></label>
+                                            <input type="text" id="qtyTxt" class="form-control" required
+                                                placeholder="Enter Quantity" onkeyup="textQtyValidator();">
+
+                                        </div>
+                                        <!-- qty end -->
+
+                                        <!-- Status start -->
+                                        <div class="col-6">
+                                            <label for="slctGarbageStatus" class="form label fw-bold">Status : <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="slctStatus" id="slctGarbageStatus" class="form-select"
+                                                required
+                                                onchange="selectDVali(this, '','garbage','garbageremovalstatus_id','oldGarbage')">
+                                                <option value="" selected disabled>Select Status</option>
+                                                <option value="available">available </option>
+                                                <option value="unavailable">unavailable </option>
+                                            </select>
+                                        </div>
+                                        <!-- Status end -->
+
+
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <!-- note start -->
+
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="textNote"
+                                                    onkeyup="textFeildVali(this, '' ,'garbage' , 'note','oldGarbage')">
+                                                </textarea>
+                                                <label for="textNote" class="form-label fw-bold">
+                                                    Note :
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- note end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- button start -->
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                type="reset">
+                                                <i class="fa-solid fa-recycle"></i> Clear</button>
+                                        </div>
+
+                                        <div class="col-3"></div>
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                                disabled id="btnGarbageUpdate" onclick="garbageUpdate()"><i
+                                                    class="fa-solid fa-wrench"></i> Update</button>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <button type="submit"
+                                                class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                id="btnGarbageSubmit" onclick="garbageSubmit()"><i
+                                                    class="fa-solid fa-folder-plus"></i> Add</button>
+                                        </div>
+                                        <!-- button end -->
+                                    </div>
+                            </div>
+                            </form>
+                            <!-- form end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- add offcanves end -->
+
+    </div>
+
+    <!-- view modal in garbage start -->
+
+    <div class="modal" id="garbageViewModal" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title">View Garbage Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body div-form">
+                    <img class="ico" src="../resources/images/sm_logo.ico" alt="logo">
+                    <span class="textlogo gradient-text">SAMANMALI</span>
+
+                    <table id="printGarbageTable" class="table table-hover table-bordered table-striped">
+
+                        <tr>
+                            <td><b>Contact:</b> <br></td>
+                            <td colspan="2"> 0372257260 <br> Samanmali@email.com</td>
+                            <td><b>Address :</b></td>
+                            <td colspan="2"> Bemmulegedara,<br> Narammala. </td>
+                        </tr>
+
+                        <tr>
+                            <th>Ingredients : </th>
+                            <td id="viewIng" colspan="2"></td>
+
+                            <th>Quntity : </th>
+                            <td id="viewQty" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Reason : </th>
+                            <td id="viewReason" colspan="2"></td>
+
+                            <th>Expired Date : </th>
+                            <td id="viewExpDate" colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>Batch Number : </th>
+                            <td id="viewBatchNumber" colspan="2"></td>
+
+                            <th>Note : </th>
+                            <td id="viewNote" colspan="2"></td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="btnPrintRow();">print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- view modal in garbage end -->
+
+    <!-- link functioncalling js file -->
+    <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/garbage.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/navbar.js"></script>
+
+</body>
+
+</html>

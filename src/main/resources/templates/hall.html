@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{header :: headFragment}"> </head>
+
+<body>
+
+    <!-- sidebar start -->
+    <section th:replace="~{navbar :: sidebarFragment}"></section>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <section id="content">
+
+        <nav th:replace="~{navbar :: topnavbarFragment}"></nav>
+
+    </section>
+    <!-- content start -->
+
+    <!-- user edit modal start -->
+    <div th:replace="~{navbar :: userEditModal}"></div>
+    <!-- user edit modal end -->
+
+    <div class="container-fluid mt-2">
+        <!-- title start -->
+        <div class="row p-2">
+            <div class="col-12 text-center gradient-text">
+                <h1 class="h1"><b>FUNCTION HALL MANAGEMENT</b></h1>
+            </div>
+        </div>
+        <!-- title end -->
+
+        <!-- offcanves button start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10 text-end">
+                <button class="btn btn-gradient" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasHallAdd" aria-controls="staticBackdrop">
+                    <i class="fa-solid fa-plus"> </i> Add New Hall
+                </button>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <!-- offcanves button end -->
+
+        <!-- table area start -->
+        <div class="row mt-2">
+            <div class="col-1"></div>
+            <div class="col-10">
+
+                <!-- table start -->
+                <table class="table table-bordered table-striped border-danger" id="tableHall">
+                    <thead class="table-dark">
+
+                        <!-- # no index -->
+                        <th> # </th>
+                        <th>Hall Name</th>
+                        <th>Max Count</th>
+                        <th>Features</th>
+                        <th>Status</th>
+                        <th>Modify</th>
+                    </thead>
+                    <tbody class="table-warning">
+
+                    </tbody>
+                </table>
+                <!-- table end -->
+            </div>
+            <div class="col-1"></div>
+            <!-- table area end -->
+
+            <!-- hall add offcanves start -->
+
+            <div class="offcanvas offcanvas-top" data-bs-backdrop="static" tabindex="-1" id="offcanvasHallAdd"
+                aria-labelledby="staticBackdropLabel">
+                <div class="offcanvas-header">
+                    <h2 class="gradient-text">Manage Function Hall</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <div class="col-md-12">
+                        <div class="row no-gutters">
+
+                            <!-- img area start -->
+                            <div class="col-md-5 d-flex align-items-stretch">
+                                <div class="info-wrap w-100 p-5 img formImg"
+                                    style="background-image: url(../resources/images/hall.jpg);">
+                                </div>
+                            </div>
+                            <!-- img area end -->
+
+                            <div class="col-md-7">
+                                <!-- form -->
+                                <form onsubmit="return false" id="formHall">
+
+                                    <div class="row mt-2">
+                                        <!-- hall name start -->
+                                        <div class="col-6">
+                                            <label for="textName" class="form-label fw-bold">Hall Name : <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" id="textName" class="form-control" required
+                                                placeholder="Enter Hall Name"
+                                                onkeyup="textFeildVali(this,'^([A-Z][a-z]{2,15}[\\s]){1,10}([A-Z][a-z]{2,15}){1}$', 'hall' , 'name')">
+                                        </div>
+                                        <!-- hall name end-->
+
+                                        <!-- count start -->
+
+                                        <div class="col-6">
+                                            <label for="countTxt" class="form-label fw-bold">Max Participate Count :
+                                                <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fa-solid fa-people-group"
+                                                        style="color: #00040a;"></i></span>
+                                                <input type="text" id="countTxt" class="form-control" required
+                                                    placeholder="Enter Conut"
+                                                    onkeyup="textFeildVali(this,'^[0-9]+$','hall','maxparticipantcount','oldHall')">
+                                            </div>
+                                        </div>
+
+                                        <!-- count end -->
+
+                                    </div>
+
+
+                                    <!-- features auto fill start -->
+                                    <div class="row mt-2">
+                                        <div id="featuresDiv" class="w-100 mt-2 d-flex justify-content-between">
+
+                                        </div>
+                                    </div>
+
+                                    <!-- features auto fill end -->
+
+                                    <div class="row mt-2">
+
+                                        <!-- Status start -->
+
+                                        <div class="col-6">
+                                            <label for="slctHallStatus" class="form label fw-bold">Status : <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="slctStatus" id="slctHallStatus" class="form-select" required
+                                                onchange="selectDVali(this, '','hall','hallstatus_id','oldHall')">
+                                                <option value="" selected disabled>Select Status</option>
+                                                <option value="available">available </option>
+                                                <option value="unavailable">unavailable </option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Status end -->
+
+                                        <!-- note start -->
+
+                                        <div class="col-6">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" id="textNote"
+                                                    onkeyup="textFeildVali(this, '' ,'hall' , 'note','oldHall')">
+                                                </textarea>
+                                                <label for="textNote" class="form-label fw-bold">
+                                                    Note :
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- note end -->
+                                    </div>
+
+                                    <div class="row mt-2">
+
+                                        <!-- button start -->
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-danger rounded-pill"
+                                                type="reset">
+                                                <i class="fa-solid fa-recycle"></i> Clear</button>
+                                        </div>
+
+                                        <div class="col-3"></div>
+
+                                        <div class="col-3">
+                                            <button
+                                                class="form label fw-bold form-control btn btn-outline-primary rounded-pill"
+                                                disabled id="btnHallUpdate" onclick="hallUpdate()"><i
+                                                    class="fa-solid fa-wrench"></i> Update</button>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <button type="submit"
+                                                class="form label fw-bold form-control btn btn-outline-success rounded-pill"
+                                                id="btnHallSubmit" onclick="hallSubmit()"><i
+                                                    class="fa-solid fa-folder-plus"></i> Add</button>
+                                        </div>
+
+                                        <!-- button end -->
+
+                                    </div>
+
+                            </div>
+                            </form>
+                            <!-- form end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- hall add offcanves end -->
+
+    </div>
+
+    <!-- link functioncalling js file -->
+    <script src="controllers/controllerFunction/functioncalling.js"></script>
+
+    <!-- link validation js file -->
+    <script src="controllers/controllerFunction/validationfunction.js"></script>
+
+    <!-- link commonFunction file  -->
+    <script src="controllers/controllerFunction/commonFunction.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/hall.js"></script>
+
+    <!-- link js file -->
+    <script src="controllers/navbar.js"></script>
+
+</body>
+
+</html>
